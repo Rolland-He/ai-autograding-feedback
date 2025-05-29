@@ -12,6 +12,28 @@ from .helpers import arg_options
 from .helpers.constants import TEST_OUTPUTS_DIRECTORY, HELP_MESSAGES
 
 
+def detect_submission_type(assignment_folder: str) -> str:
+    """
+    Automatically detect the submission type based on file extensions in the assignment folder.
+    
+    Args:
+        assignment_folder (str): Path to the assignment directory.
+        
+    Returns:
+        str: The detected submission type ("jupyter", "python", or "pdf").
+    """
+    for filename in os.listdir(assignment_folder):
+        if filename.endswith("_submission.ipynb"):
+            return "jupyter"
+        elif filename.endswith("_submission.py"):
+            return "python"
+        elif filename.endswith("_submission.pdf"):
+            return "pdf"
+    
+    print("Error: Could not auto-detect submission type.")
+    sys.exit(1)
+
+
 def load_markdown_template() -> str:
     """
     Loads the markdown template used for formatting output.
@@ -49,7 +71,8 @@ def main() -> int:
         "--submission_type",
         type=str,
         choices=arg_options.get_enum_values(arg_options.FileType),
-        required=True,
+        required=False,
+        default=None,
         help=HELP_MESSAGES["submission_type"],
     )
     parser.add_argument(
@@ -67,11 +90,11 @@ def main() -> int:
         "--scope",
         type=str,
         choices=arg_options.get_enum_values(arg_options.Scope),
-        required=True,
+        required=False,
         help=HELP_MESSAGES["scope"],
     )
     parser.add_argument(
-        "--assignment", type=str, required=True, help=HELP_MESSAGES["assignment"]
+        "--assignment", type=str, required=False, help=HELP_MESSAGES["assignment"]
     )
     parser.add_argument(
         "--question", type=str, required=False, help=HELP_MESSAGES["question"]
@@ -80,18 +103,25 @@ def main() -> int:
         "--model",
         type=str,
         choices=arg_options.get_enum_values(arg_options.Models),
-        required=True,
+        required=False,
         help=HELP_MESSAGES["model"],
     )
     parser.add_argument(
         "--output",
         type=str,
         choices=arg_options.get_enum_values(arg_options.OutputType),
-        required=True,
+        required=False,
         help=HELP_MESSAGES["output"],
     )
 
     args = parser.parse_args()
+
+    # Auto-detect submission type if not provided
+    if args.submission_type is None:
+        if not args.assignment:
+            print("Error: --assignment is required when --submission_type is not specified.")
+            sys.exit(1)
+        args.submission_type = detect_submission_type(args.assignment)
 
     prompt_content = ""
 
