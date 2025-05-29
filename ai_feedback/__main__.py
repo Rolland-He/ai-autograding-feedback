@@ -90,11 +90,11 @@ def main() -> int:
         "--scope",
         type=str,
         choices=arg_options.get_enum_values(arg_options.Scope),
-        required=False,
+        required=True,
         help=HELP_MESSAGES["scope"],
     )
     parser.add_argument(
-        "--assignment", type=str, required=False, help=HELP_MESSAGES["assignment"]
+        "--assignment", type=str, required=True, help=HELP_MESSAGES["assignment"]
     )
     parser.add_argument(
         "--question", type=str, required=False, help=HELP_MESSAGES["question"]
@@ -103,14 +103,14 @@ def main() -> int:
         "--model",
         type=str,
         choices=arg_options.get_enum_values(arg_options.Models),
-        required=False,
+        required=True,
         help=HELP_MESSAGES["model"],
     )
     parser.add_argument(
         "--output",
         type=str,
         choices=arg_options.get_enum_values(arg_options.OutputType),
-        required=False,
+        required=True,
         help=HELP_MESSAGES["output"],
     )
 
