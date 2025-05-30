@@ -5,6 +5,7 @@ from typing import Callable, List, Tuple
 
 from .helpers.arg_options import model_mapping
 from .helpers.file_converter import rename_files
+from .helpers.template_utils import render_prompt_template, gather_file_references, gather_file_contents
 
 EXPECTED_SUFFIXES = ["_solution", "test_output", "_submission"]
 
@@ -70,6 +71,20 @@ def process_code(args, prompt: str) -> Tuple[str, str]:
             prompt += (
                 f"\nThe student's error trace file you should reference is {filename}."
             )
+
+    # Replace manual concatenation with template rendering
+    if "{file_references}" in prompt or "{file_contents}" in prompt:
+        # Gather data for template placeholders
+        template_data = {}
+        
+        if "{file_references}" in prompt:
+            template_data["file_references"] = gather_file_references(assignment_files)
+            
+        if "{file_contents}" in prompt:
+            template_data["file_contents"] = gather_file_contents(assignment_files)
+        
+        # Render the template with gathered data
+        prompt = render_prompt_template(prompt, **template_data)
 
     if args.model in model_mapping:
         model = model_mapping[args.model]()

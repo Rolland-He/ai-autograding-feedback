@@ -10,6 +10,7 @@ from . import code_processing
 from . import text_processing
 from .helpers import arg_options
 from .helpers.constants import TEST_OUTPUTS_DIRECTORY, HELP_MESSAGES
+from .helpers.template_utils import render_prompt_template, gather_file_references, gather_file_contents
 
 
 def detect_submission_type(assignment_folder: str) -> str:
@@ -31,20 +32,6 @@ def detect_submission_type(assignment_folder: str) -> str:
     
     print("Error: Could not auto-detect submission type.")
     sys.exit(1)
-
-
-def render_prompt_template(prompt_content: str, **kwargs) -> str:
-    """
-Render a prompt template by replacing placeholders with actual values.
-    
-    Args:
-        prompt_content (str): The prompt template with placeholders like {file_contents}
-        **kwargs: Key-value pairs for placeholder replacement
-        
-    Returns:
-        str: The rendered prompt with placeholders replaced
-    """
-    return prompt_content.format(**kwargs)
 
 
 def load_markdown_template() -> str:
