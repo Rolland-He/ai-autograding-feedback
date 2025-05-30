@@ -39,18 +39,7 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
         and any(os.path.splitext(f)[0].endswith(suffix) for suffix in EXPECTED_SUFFIXES)
     ]
 
-    for file in assignment_files:
-        filename = os.path.basename(file)
-        name_without_ext, _ = os.path.splitext(filename)
-
-        if name_without_ext.endswith("_solution"):
-            prompt += (
-                f"\nThe instructor's solution file you should reference is {filename}."
-            )
-        elif name_without_ext.endswith("_submission"):
-            prompt += f"\nThe student's code submission file you should reference is {filename}."
-
-    # Replace manual concatenation with template rendering
+    # Use template rendering system for all prompt building
     if "{file_references}" in prompt or "{file_contents}" in prompt:
         # Gather data for template placeholders
         template_data = {}

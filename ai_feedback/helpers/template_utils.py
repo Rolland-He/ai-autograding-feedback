@@ -1,4 +1,7 @@
 import os
+from pathlib import Path
+from PIL import Image as PILImage
+from ollama import Image
 
 
 def render_prompt_template(prompt_content: str, **kwargs) -> str:
@@ -68,4 +71,75 @@ def gather_file_contents(assignment_files: list[str]) -> str:
                 file_contents += f"(Line {i}) {line}"
         file_contents += "\n"
     
-    return file_contents 
+    return file_contents
+
+
+def gather_image_context(output_directory: str, question: str) -> str:
+    """Gather question context for image prompts.
+    
+    Args:
+        output_directory (str): Directory containing extracted images
+        question (str): Question identifier
+        
+    Returns:
+        str: Question context content
+    """
+    try:
+        from ..helpers.image_reader import read_question_context
+        return read_question_context(output_directory, question)
+    except Exception as e:
+        print(f"Error reading question context: {e}")
+        return ""
+
+
+def gather_image_size(output_directory: str, question: str) -> str:
+    """Gather image size information for prompts.
+    
+    Args:
+        output_directory (str): Directory containing extracted images
+        question (str): Question identifier
+        
+    Returns:
+        str: Image size in format "width by height"
+    """
+    try:
+        from ..helpers.image_reader import read_submission_images
+        submission_image_paths = read_submission_images(output_directory, question)
+        if submission_image_paths:
+            image = PILImage.open(submission_image_paths[0])
+            return f"{image.width} by {image.height}"
+    except Exception as e:
+        print(f"Error reading image size: {e}")
+    return "unknown"
+
+
+def gather_images(output_directory: str, question: str, include_images: list[str]) -> list[Image]:
+    """Gather images for attachment to message.
+    
+    Args:
+        output_directory (str): Directory containing extracted images
+        question (str): Question identifier
+        include_images (list[str]): List of image types to include ("submission", "solution")
+        
+    Returns:
+        list[Image]: List of Image objects for message attachment
+    """
+    images = []
+    
+    try:
+        from ..helpers.image_reader import read_submission_images, read_solution_images
+        
+        if "submission" in include_images:
+            submission_paths = read_submission_images(output_directory, question)
+            if submission_paths:
+                images.append(Image(value=submission_paths[0]))
+                
+        if "solution" in include_images:
+            solution_paths = read_solution_images(output_directory, question)
+            if solution_paths:
+                images.append(Image(value=solution_paths[0]))
+                
+    except Exception as e:
+        print(f"Error gathering images: {e}")
+    
+    return images 
