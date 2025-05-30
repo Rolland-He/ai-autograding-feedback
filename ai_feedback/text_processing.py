@@ -39,19 +39,17 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
         and any(os.path.splitext(f)[0].endswith(suffix) for suffix in EXPECTED_SUFFIXES)
     ]
 
-    # Use template rendering system for all prompt building
-    if "{file_references}" in prompt or "{file_contents}" in prompt:
-        # Gather data for template placeholders
-        template_data = {}
-        
-        if "{file_references}" in prompt:
-            template_data["file_references"] = gather_file_references(assignment_files)
-            
-        if "{file_contents}" in prompt:
-            template_data["file_contents"] = gather_file_contents(assignment_files)
-        
-        # Render the template with gathered data
-        prompt = render_prompt_template(prompt, **template_data)
+    # Use original approach: only add file references, not contents
+    for file in assignment_files:
+        filename = os.path.basename(file)
+        name_without_ext, _ = os.path.splitext(filename)
+
+        if name_without_ext.endswith("_solution"):
+            prompt += (
+                f"\nThe instructor's solution file you should reference is {filename}."
+            )
+        elif name_without_ext.endswith("_submission"):
+            prompt += f"\nThe student's code submission file you should reference is {filename}."
 
     if args.model in model_mapping:
         model = model_mapping[args.model]()
@@ -63,13 +61,12 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
         if args.question:
             request, response = model.generate_response(
                 prompt=prompt,
-                scope=args.scope,
                 assignment_files=assignment_files,
                 question_num=args.question,
             )
         else:
             request, response = model.generate_response(
-                prompt=prompt, scope=args.scope, assignment_files=assignment_files
+                prompt=prompt, assignment_files=assignment_files
             )
 
     return request, response

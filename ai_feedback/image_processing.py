@@ -1,4 +1,5 @@
 import base64
+import os
 from pathlib import Path
 
 from anthropic import Anthropic
@@ -108,7 +109,7 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
     for question in questions:
         # Use template rendering system for all prompt building
         content = prompt["prompt_content"]
-        
+
         # Gather template data
         template_data = {}
         

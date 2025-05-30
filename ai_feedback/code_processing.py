@@ -59,7 +59,6 @@ def process_code(args, prompt: str) -> Tuple[str, str]:
 
     # Use template rendering system for all prompt building
     if "{file_references}" in prompt or "{file_contents}" in prompt:
-        # Gather data for template placeholders
         template_data = {}
         
         if "{file_references}" in prompt:
@@ -68,7 +67,6 @@ def process_code(args, prompt: str) -> Tuple[str, str]:
         if "{file_contents}" in prompt:
             template_data["file_contents"] = gather_file_contents(assignment_files)
         
-        # Render the template with gathered data
         prompt = render_prompt_template(prompt, **template_data)
 
     if args.model in model_mapping:
