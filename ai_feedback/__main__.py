@@ -13,8 +13,7 @@ from .helpers.constants import TEST_OUTPUTS_DIRECTORY, HELP_MESSAGES
 
 
 def detect_submission_type(assignment_folder: str) -> str:
-    """
-    Automatically detect the submission type based on file extensions in the assignment folder.
+    """Automatically detect the submission type based on file extensions in the assignment folder.
     
     Args:
         assignment_folder (str): Path to the assignment directory.
@@ -118,9 +117,6 @@ def main() -> int:
 
     # Auto-detect submission type if not provided
     if args.submission_type is None:
-        if not args.assignment:
-            print("Error: --assignment is required when --submission_type is not specified.")
-            sys.exit(1)
         args.submission_type = detect_submission_type(args.assignment)
 
     prompt_content = ""
