@@ -107,46 +107,36 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
     requests: list[str] = []
     responses: list[str] = []
     for question in questions:
-        # Use template rendering system for all prompt building
-        content = prompt["prompt_content"]
+        message = Message(role="user", content=prompt["prompt_content"], images=[])
 
-        # Gather template data
-        template_data = {}
-        
-        if "{context}" in content:
-            context = gather_image_context(OUTPUT_DIRECTORY, question)
-            template_data["context"] = "```\n" + context + "\n```"
-            
-        if "{image_size}" in content:
-            template_data["image_size"] = gather_image_size(OUTPUT_DIRECTORY, question)
-        
-        # Render template
-        if template_data:
-            content = render_prompt_template(content, **template_data)
-        
-        # Gather images for attachment
-        include_images = prompt.get("include_images", [])
-        message = Message(role="user", content=content, images=gather_images(OUTPUT_DIRECTORY, question, include_images))
-
-        # Gather images based on boolean flags
-        images = []
+        # Add image attachments and extra information using standardized template approach
+        # Always replace {context} when it appears (simplified from include_question_context boolean)
+        if "{context}" in message.content:
+            context = read_question_context(OUTPUT_DIRECTORY, question)
+            message.content = message.content.replace(
+                "{context}", "```\n" + context + "\n```"
+            )
+        if "{image_size}" in message.content:
+            submission_image_paths = read_submission_images(OUTPUT_DIRECTORY, question)
+            submission_image_path = submission_image_paths[
+                0
+            ]  # Only consider one image per question
+            image = PILImage.open(submission_image_path)
+            message.content = message.content.replace(
+                "{image_size}", f"{image.width} by {image.height}"
+            )
         if prompt.get("include_submission_image", False):
-            try:
-                submission_image_paths = read_submission_images(OUTPUT_DIRECTORY, question)
-                if submission_image_paths:
-                    images.append(Image(value=submission_image_paths[0]))
-            except Exception as e:
-                print(f"Error loading submission image: {e}")
-                
+            submission_image_paths = read_submission_images(OUTPUT_DIRECTORY, question)
+            submission_image_path = submission_image_paths[
+                0
+            ]  # Only consider one image per question
+            message.images.append(Image(value=submission_image_path))
         if prompt.get("include_solution_image", False):
-            try:
-                solution_image_paths = read_solution_images(OUTPUT_DIRECTORY, question)
-                if solution_image_paths:
-                    images.append(Image(value=solution_image_paths[0]))
-            except Exception as e:
-                print(f"Error loading solution image: {e}")
-        
-        message = Message(role="user", content=content, images=images)
+            solution_image_paths = read_solution_images(OUTPUT_DIRECTORY, question)
+            solution_image_path = solution_image_paths[
+                0
+            ]  # Only consider one image per question
+            message.images.append(Image(value=solution_image_path))
 
         # Prompt the LLM
         requests.append(
