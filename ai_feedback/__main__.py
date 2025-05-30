@@ -55,6 +55,27 @@ def detect_submission_type(assignment_folder: str) -> str:
     sys.exit(1)
 
 
+def detect_submission_type(assignment_folder: str) -> str:
+    """Automatically detect the submission type based on file extensions in the assignment folder.
+    
+    Args:
+        assignment_folder (str): Path to the assignment directory.
+        
+    Returns:
+        str: The detected submission type ("jupyter", "python", or "pdf").
+    """
+    for filename in os.listdir(assignment_folder):
+        if filename.endswith("_submission.ipynb"):
+            return "jupyter"
+        elif filename.endswith("_submission.py"):
+            return "python"
+        elif filename.endswith("_submission.pdf"):
+            return "pdf"
+    
+    print("Error: Could not auto-detect submission type.")
+    sys.exit(1)
+
+
 def load_markdown_template() -> str:
     """
     Loads the markdown template used for formatting output.
