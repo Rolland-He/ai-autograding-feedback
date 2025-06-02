@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from PIL import Image as PILImage
 from ollama import Image
+import PyPDF2
 
 
 def render_prompt_template(prompt_content: str, **kwargs) -> str:
@@ -55,23 +56,63 @@ def gather_file_contents(assignment_files: list[str]) -> str:
     
     for file_path in assignment_files:
         filename = os.path.basename(file_path)
+        
         try:
-            with open(file_path, "r") as file:
-                lines = file.readlines()
+            # Handle PDF files separately
+            if filename.lower().endswith('.pdf'):
+                text_content = extract_pdf_text(file_path)
+                file_contents += f"=== {filename} ===\n"
+                lines = text_content.split('\n')
+                for i, line in enumerate(lines, start=1):
+                    stripped_line = line.rstrip()
+                    if stripped_line.strip():
+                        file_contents += f"(Line {i}) {stripped_line}\n"
+                    else:
+                        file_contents += f"(Line {i}) \n"
+                file_contents += "\n"
+            else:
+                # Handle regular text files
+                with open(file_path, "r", encoding="utf-8") as file:
+                    lines = file.readlines()
+                
+                file_contents += f"=== {filename} ===\n"
+                for i, line in enumerate(lines, start=1):
+                    stripped_line = line.rstrip("\n")
+                    if stripped_line.strip():
+                        file_contents += f"(Line {i}) {stripped_line}\n"
+                    else:
+                        file_contents += f"(Line {i}) {line}"
+                file_contents += "\n"
+                
         except Exception as e:
             print(f"Error reading file {filename}: {e}")
             continue
-        
-        file_contents += f"=== {filename} ===\n"
-        for i, line in enumerate(lines, start=1):
-            stripped_line = line.rstrip("\n")
-            if stripped_line.strip():
-                file_contents += f"(Line {i}) {stripped_line}\n"
-            else:
-                file_contents += f"(Line {i}) {line}"
-        file_contents += "\n"
     
     return file_contents
+
+
+def extract_pdf_text(pdf_path: str) -> str:
+    """Extract text content from a PDF file.
+    
+    Args:
+        pdf_path (str): Path to the PDF file
+        
+    Returns:
+        str: Extracted text content from the PDF
+    """
+    try:
+        with open(pdf_path, 'rb') as file:
+            pdf_reader = PyPDF2.PdfReader(file)
+            text = ""
+            
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                text += page.extract_text() + "\n"
+            
+            return text.strip()
+    except Exception as e:
+        print(f"Error extracting text from PDF {pdf_path}: {e}")
+        return f"[Error: Could not extract text from PDF {os.path.basename(pdf_path)}]"
 
 
 def gather_image_context(output_directory: str, question: str) -> str:

@@ -109,8 +109,7 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
     for question in questions:
         message = Message(role="user", content=prompt["prompt_content"], images=[])
 
-        # Add image attachments and extra information using standardized template approach
-        # Always replace {context} when it appears (simplified from include_question_context boolean)
+        # Always replace {context} when it appears
         if "{context}" in message.content:
             context = read_question_context(OUTPUT_DIRECTORY, question)
             message.content = message.content.replace(
