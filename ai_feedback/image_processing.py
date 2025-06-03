@@ -10,7 +10,6 @@ from PIL import Image as PILImage
 from .helpers.arg_options import Models
 from .helpers.image_extractor import extract_images
 from .helpers.image_reader import *
-from .helpers.template_utils import render_prompt_template, gather_image_context, gather_image_size, gather_images
 
 
 def encode_image(image_path: os.PathLike) -> bytes:

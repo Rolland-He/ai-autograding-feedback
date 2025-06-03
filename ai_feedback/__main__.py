@@ -10,7 +10,6 @@ from . import code_processing
 from . import text_processing
 from .helpers import arg_options
 from .helpers.constants import TEST_OUTPUTS_DIRECTORY, HELP_MESSAGES
-from .helpers.template_utils import render_prompt_template, gather_file_references, gather_file_contents
 
 
 def detect_submission_type(assignment_folder: str) -> str:
