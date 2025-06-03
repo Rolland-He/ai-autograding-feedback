@@ -5,17 +5,27 @@ from ollama import Image
 import PyPDF2
 
 
-def render_prompt_template(prompt_content: str, **kwargs) -> str:
+def render_prompt_template(prompt_content: str, assignment_files: list[str] = None, **kwargs) -> str:
     """Render a prompt template by replacing placeholders with actual values.
     
     Args:
         prompt_content (str): The prompt template with placeholders like {file_contents}
-        **kwargs: Key-value pairs for placeholder replacement
+        assignment_files (list[str], optional): List of file paths for file-based placeholders
+        **kwargs: Additional key-value pairs for placeholder replacement
         
     Returns:
         str: The rendered prompt with placeholders replaced
     """
-    return prompt_content.format(**kwargs)
+    template_data = kwargs.copy()
+    
+    if assignment_files is not None:
+        if '{file_references}' in prompt_content and 'file_references' not in template_data:
+            template_data['file_references'] = gather_file_references(assignment_files)
+            
+        if '{file_contents}' in prompt_content and 'file_contents' not in template_data:
+            template_data['file_contents'] = gather_file_contents(assignment_files)
+    
+    return prompt_content.format(**template_data)
 
 
 def gather_file_references(assignment_files: list[str]) -> str:
@@ -183,4 +193,4 @@ def gather_images(output_directory: str, question: str, include_images: list[str
     except Exception as e:
         print(f"Error gathering images: {e}")
     
-    return images 
+    return images

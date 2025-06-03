@@ -5,7 +5,7 @@ from typing import Callable, List, Tuple
 
 from .helpers.arg_options import model_mapping
 from .helpers.file_converter import rename_files
-from .helpers.template_utils import render_prompt_template, gather_file_references, gather_file_contents
+from .helpers.template_utils import render_prompt_template
 
 EXPECTED_SUFFIXES = ["_solution", "test_output", "_submission"]
 
@@ -57,17 +57,7 @@ def process_code(args, prompt: str) -> Tuple[str, str]:
             )
         ]
 
-    # Use template rendering system for all prompt building
-    if "{file_references}" in prompt or "{file_contents}" in prompt:
-        template_data = {}
-        
-        if "{file_references}" in prompt:
-            template_data["file_references"] = gather_file_references(assignment_files)
-            
-        if "{file_contents}" in prompt:
-            template_data["file_contents"] = gather_file_contents(assignment_files)
-        
-        prompt = render_prompt_template(prompt, **template_data)
+    prompt = render_prompt_template(prompt, assignment_files=assignment_files)
 
     if args.model in model_mapping:
         model = model_mapping[args.model]()

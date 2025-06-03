@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Tuple, List
 
 from .helpers.arg_options import model_mapping
-from .helpers.template_utils import render_prompt_template, gather_file_references, gather_file_contents
+from .helpers.template_utils import render_prompt_template
 
 EXPECTED_SUFFIXES = ["_solution", "_submission"]
 
@@ -39,16 +39,7 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
         and any(os.path.splitext(f)[0].endswith(suffix) for suffix in EXPECTED_SUFFIXES)
     ]
 
-    # Use template system to render prompt with file contents
-    template_data = {}
-    
-    if '{file_references}' in prompt:
-        template_data['file_references'] = gather_file_references(assignment_files)
-    
-    if '{file_contents}' in prompt:
-        template_data['file_contents'] = gather_file_contents(assignment_files)
-    
-    rendered_prompt = render_prompt_template(prompt, **template_data)
+    rendered_prompt = render_prompt_template(prompt, assignment_files=assignment_files)
 
     if args.model in model_mapping:
         model = model_mapping[args.model]()
