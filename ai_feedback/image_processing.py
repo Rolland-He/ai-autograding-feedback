@@ -130,6 +130,19 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
             )
             
         rendered_prompt = render_prompt_template(prompt_content)
+        
+        # Replace generic image placeholders with specific positional references
+        has_submission = "submission" in required_images
+        has_solution = "solution" in required_images and args.solution_image
+        
+        if has_submission and has_solution:
+            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "the first image (student's submission)")
+            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "the second image (expected solution)")
+        elif has_submission:
+            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "the image (student's submission)")
+        elif has_solution:
+            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "the image (expected solution)")
+        
         message = Message(role="user", content=rendered_prompt, images=[])
         if "submission" in required_images:
             # Only consider one image per question
