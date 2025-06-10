@@ -64,7 +64,16 @@ Currently, jupyter notebook, pdf, and python assignments are supported.
 
 ## Prompts
 The user can use this argument to specify which predefined prompt they wish the model to use.
-To view the predefined prompts, navigate to the ai_feedback/data/prompts/user folder. Each prompt is stored as a markdown file that can contain template placeholders.
+To view the predefined prompts, navigate to the ai_feedback/data/prompts/user folder. Each prompt is stored as a markdown file that can contain template placeholders with the following structure:
+
+```markdown
+Consider this question: 
+{context}
+
+{submission_image}
+
+Do the graphs in the attached image solve the problem? Do not include an example solution. 
+```
 
 Prompt files are now stored as markdown (.md) files in the `ai_feedback/data/prompts/user/` directory. Each prompt can contain template placeholders that will be automatically replaced with relevant content.
 
