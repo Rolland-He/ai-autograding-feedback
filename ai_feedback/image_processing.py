@@ -132,10 +132,13 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
         has_submission = "{submission_image}" in prompt_content
         has_solution = "{solution_image}" in prompt_content and args.solution_image
 
-        if has_submission:
-            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "the image of student's submission)")
-        if has_solution:
-            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "the image of expected solution)")
+        if has_submission and has_solution:
+            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "The first attached image is the student's submission.")
+            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "The second attached image is the expected solution.")
+        elif has_submission:
+            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "The attached image is the student's submission.")
+        elif has_solution: 
+            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "The attached image is the expected solution.")
         
         message = Message(role="user", content=rendered_prompt, images=[])
         if "{submission_image}" in prompt_content:
