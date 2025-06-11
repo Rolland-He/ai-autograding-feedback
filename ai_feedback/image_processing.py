@@ -9,7 +9,7 @@ from PIL import Image as PILImage
 from .helpers.arg_options import Models
 from .helpers.image_extractor import extract_images
 from .helpers.image_reader import *
-from .helpers.template_utils import render_prompt_template, detect_required_images
+from .helpers.template_utils import render_prompt_template
 
 
 def encode_image(image_path: os.PathLike) -> bytes:
@@ -108,9 +108,6 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
     requests: list[str] = []
     responses: list[str] = []
     
-    # Detect which images are required based on prompt placeholders
-    required_images = detect_required_images(prompt)
-    
     for question in questions:
         # Start with the raw prompt content
         prompt_content = prompt["prompt_content"]
@@ -132,8 +129,8 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
         rendered_prompt = render_prompt_template(prompt_content)
         
         # Replace generic image placeholders with specific positional references
-        has_submission = "submission" in required_images
-        has_solution = "solution" in required_images and args.solution_image
+        has_submission = "{submission_image}" in prompt_content
+        has_solution = "{solution_image}" in prompt_content and args.solution_image
 
         if has_submission:
             rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "the image of student's submission)")
@@ -141,11 +138,11 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
             rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "the image of expected solution)")
         
         message = Message(role="user", content=rendered_prompt, images=[])
-        if "submission" in required_images:
+        if "{submission_image}" in prompt_content:
             # Only consider one image per question
             submission_image_path = args.submission_image
             message.images.append(Image(value=submission_image_path))
-        if "solution" in required_images and args.solution_image:
+        if "{solution_image}" in prompt_content and args.solution_image:
             # Only consider one image per question
             solution_image_path = args.solution_image
             message.images.append(Image(value=solution_image_path))

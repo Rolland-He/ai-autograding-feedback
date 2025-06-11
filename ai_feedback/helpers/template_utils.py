@@ -34,41 +34,6 @@ def render_prompt_template(prompt_content: str, assignment_files: list[str] = No
     return prompt_content.format(**template_data)
 
 
-def has_image_placeholders(prompt_content: str) -> tuple[bool, bool]:
-    """Check if prompt content contains image placeholders.
-    
-    Args:
-        prompt_content (str): The prompt template content
-        
-    Returns:
-        tuple[bool, bool]: (has_submission_image, has_solution_image)
-    """
-    has_submission = '{submission_image}' in prompt_content
-    has_solution = '{solution_image}' in prompt_content
-    return has_submission, has_solution
-
-
-def detect_required_images(prompt: dict) -> list[str]:
-    """Detect which images are required based on placeholders in prompt content.
-    
-    Args:
-        prompt (dict): The prompt dictionary with prompt_content
-        
-    Returns:
-        list[str]: List of required image types ("submission", "solution")
-    """
-    prompt_content = prompt.get("prompt_content", "")
-    has_submission, has_solution = has_image_placeholders(prompt_content)
-    
-    required_images = []
-    if has_submission:
-        required_images.append("submission")
-    if has_solution:
-        required_images.append("solution")
-    
-    return required_images
-
-
 def gather_file_references(assignment_files: list[str]) -> str:
     """Generate file reference descriptions for prompt templates.
     
