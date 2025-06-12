@@ -92,8 +92,6 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
     submission_notebook = Path(args.submission)
     if args.solution:
         solution_notebook = Path(args.solution)
-    if not args.submission_image:
-        raise SystemExit(f"Missing image argument.")
     # Extract submission images
     extract_images(submission_notebook, OUTPUT_DIRECTORY, "submission")
     # Optionally extract solution images
@@ -112,6 +110,12 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
         # Start with the raw prompt content
         prompt_content = prompt["prompt_content"]
         
+        # Validate required image arguments based on prompt placeholders
+        if "{submission_image}" in prompt_content and not args.submission_image:
+            raise SystemExit(f"Prompt requires submission image but --submission-image not provided.")
+        if "{solution_image}" in prompt_content and not args.solution_image:
+            raise SystemExit(f"Prompt requires solution image but --solution-image not provided.")
+        
         # Always replace {context} when it appears
         if "{context}" in prompt_content:
             context = read_question_context(OUTPUT_DIRECTORY, question)
@@ -126,26 +130,18 @@ def process_image(args, prompt: dict) -> tuple[str, str]:
                 "{image_size}", f"{image.width} by {image.height}"
             )
             
-        rendered_prompt = render_prompt_template(prompt_content)
-        
-        # Replace generic image placeholders with specific positional references
-        has_submission = "{submission_image}" in prompt_content
-        has_solution = "{solution_image}" in prompt_content and args.solution_image
-
-        if has_submission and has_solution:
-            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "The first attached image is the student's submission.")
-            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "The second attached image is the expected solution.")
-        elif has_submission:
-            rendered_prompt = rendered_prompt.replace("[Submission Image Attached]", "The attached image is the student's submission.")
-        elif has_solution: 
-            rendered_prompt = rendered_prompt.replace("[Solution Image Attached]", "The attached image is the expected solution.")
+        rendered_prompt = render_prompt_template(
+            prompt_content,
+            has_submission_image="{submission_image}" in prompt_content,
+            has_solution_image="{solution_image}" in prompt_content and args.solution_image
+        )
         
         message = Message(role="user", content=rendered_prompt, images=[])
         if "{submission_image}" in prompt_content:
             # Only consider one image per question
             submission_image_path = args.submission_image
             message.images.append(Image(value=submission_image_path))
-        if "{solution_image}" in prompt_content and args.solution_image:
+        if "{solution_image}" in prompt_content:
             # Only consider one image per question
             solution_image_path = args.solution_image
             message.images.append(Image(value=solution_image_path))
