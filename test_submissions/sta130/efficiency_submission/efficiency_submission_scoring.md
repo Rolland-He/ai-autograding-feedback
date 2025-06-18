@@ -6,53 +6,38 @@ This solution creates correct histograms but uses inefficient approaches:
 
 ```python
 import pandas as pd
-import plotly.express as px
+import numpy as np
+import matplotlib.pyplot as plt
 
 sb = pd.read_csv("superbowl_ads.csv", encoding="ISO-8859-1")
-
-# Inefficient: Reading data multiple times
-for i in range(3):
-    sb_temp = pd.read_csv("superbowl_ads.csv", encoding="ISO-8859-1")
-    if i == 0:
-        fig = px.histogram(sb_temp, x="view_count", nbins=50)
-    elif i == 1:
-        fig = px.histogram(sb_temp, x="view_count", nbins=25)
-    else:
-        fig = px.histogram(sb_temp, x="view_count", nbins=10)
-    fig.show()
+view_counts = sb["view_count"].dropna()
+counts, bins = np.histogram(view_counts, bins=50)
+plt.hist(bins[:-1], bins, weights=counts)
+plt.xlabel("View Count")
+plt.show()
 ```
 
 ## Issues Identified
 
-1. **Redundant File Reading**: Loads the CSV file multiple times unnecessarily
-2. **Memory Waste**: Creates temporary dataframes in each loop iteration
-3. **Performance Impact**: Inefficient I/O operations slow down execution
-4. **Poor Loop Design**: Uses unnecessary loop for creating distinct visualizations
-5. **Resource Mismanagement**: Doesn't reuse already-loaded data
+1. **Redundant Histogram Creation**: Uses np.histogram() then plt.hist() unnecessarily
+2. **Inefficient Data Processing**: Creates intermediate variables that aren't needed
+3. **Complex Plotting Approach**: Overly complicated method for simple histogram
+4. **Poor Resource Usage**: Unnecessary memory allocation for counts and bins
+5. **Suboptimal Workflow**: Could use pandas plotting methods more efficiently
 
 ## Expected AI Response
 
 The AI should identify and address:
 
-- **Inefficient I/O operations**: Point out that the CSV file should be loaded once and reused
-- **Unnecessary looping**: Explain that distinct visualizations don't require loops when they're different
-- **Resource optimization**: Suggest storing the loaded dataframe and referencing it for each histogram
-- **Performance considerations**: Emphasize efficient resource usage in data analysis workflows
-- **Code simplification**: Recommend direct approach rather than complex loop structures
+- **Overcomplicated plotting**: Point out that plt.hist() can directly plot from data without np.histogram()
+- **Pandas efficiency**: Suggest using pandas built-in plotting methods (.hist())
+- **Code simplification**: Recommend direct approach rather than manual binning
+- **Resource optimization**: Emphasize eliminating unnecessary intermediate steps
+- **Best practices**: Guide toward simpler, more efficient data visualization workflows
 
 ## Scoring Rubric
 
-- **Correctness: 95/100** - Creates correct histograms with proper bin counts
-- **Style: 70/100** - Readable but inefficient structure
-- **Efficiency: 40/100** - Major performance issues with file handling
+- **Correctness: 95/100** - Creates correct histogram with proper bin counts
+- **Style: 70/100** - Readable but unnecessarily complex structure
+- **Efficiency: 40/100** - Major performance issues with redundant operations
 - **Overall Grade: C (68%)**
-
-## Learning Objectives
-
-This submission tests the AI's ability to:
-- Identify performance and efficiency issues in data analysis code
-- Understand best practices for file I/O operations
-- Recognize when code structure creates unnecessary overhead
-- Provide guidance on resource optimization in data science
-- Balance correctness with efficiency considerations
- 
