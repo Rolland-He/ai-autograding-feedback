@@ -1,11 +1,13 @@
-- input: "Explain what this student got wrong in solving the optimal connectivity problem."
+- input: "Evaluate student submission."
   vars:
-    prompt: code_template
-    submission_file: test_submissions/csc263_opt_connected/fail_submission/fail_submission.py
-    solution_file: test_submissions/csc263_opt_connected/solution.py
-
-- input: "Analyze and verify the student's correct logic for graph connectivity."
-  vars:
-    prompt: code_template
     submission_file: test_submissions/csc263_opt_connected/correct_submission/correct_submission.py
     solution_file: test_submissions/csc263_opt_connected/solution.py
+    prompt: code_table
+    model: deepSeek-R1:70B
+
+- input: "Give feedback on the correct solution."
+  vars:
+    submission_file: test_submissions/opt_conn/correct.py
+    solution_file: test_submissions/opt_conn/solution.py
+    prompt: code_table
+    model: deepSeek-v3

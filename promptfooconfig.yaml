@@ -1,21 +1,20 @@
 providers:
-  - id: exec:python3 -m ai_feedback
-    config:
-      command: >
-        --scope code
-        --submission {{vars.submission_file}}
-        --solution {{vars.solution_file}}
-        --model deepSeek-v3
-        --llama_mode server
-        --prompt {{vars.prompt}}
-        --prompt_text "{{input}}"
+  - id: 'file://tests/promptfoo_test_runner.py'
 
-#  - id: exec:python3 -m ai_feedback
-#    config:
-#      command: >
-#        --scope code
-#        --submission {{vars.submission_file}}
-#        --solution {{vars.solution_file}}
-#        --model deepSeek-R1:70B
-#        --prompt {{vars.prompt}}
-#        --prompt_text "{{input}}"
+prompts: ./prompts.yaml
+
+columns:
+  - name: prompt
+    path: vars.prompt
+
+  - name: model
+    path: vars.model
+
+  - name: submission
+    path: vars.submission_file
+
+  - name: solution
+    path: vars.solution_file
+
+  - name: output
+    path: output
