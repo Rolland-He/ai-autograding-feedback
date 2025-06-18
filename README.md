@@ -8,7 +8,7 @@ The large language models used and implementation logic vary depending on whethe
 For the code scope, the program takes three files:
 - An assignment's solution file
 - A student's submission file
-- A test file 
+- A test file
 
 For the text scope, the program takes two files:
 - An assignment's solution file
@@ -36,27 +36,29 @@ For the image scope, the program takes up to two files, depending on the prompt 
 | `--submission`       | Submission file path                                              | ✅ |
 | `--question`         | Specific question to evaluate                                     | ❌ |
 | `--model`            | Model type (from `arg_options.Models`)                            | ✅ |
-| `--output`           | Output type (from `arg_options.Output`)                           | ❌ |
+| `--output`           | File path for where to record the output                          | ❌ |
 | `--solution`         | File path for the solution file                                   | ❌ |
 | `--test_output`      | File path for the file containing the results from tests          | ❌ |
 | `--submission_image` | File path for the submission image file                           | ❌ |
 | `--solution_image`   | File path for the solution image file                             | ❌ |
+| `--system_prompt`    | File path for the system instructions prompt                      | ❌ |
+| `--llama_mode`       | How to invoke deepSeek-v3 (choices in `arg_options.LlamaMode`)    | ❌ |
+| `--output_template`  | Output template file (from `arg_options.OutputTemplate)           | ❌ |
 ** One of either prompt, prompt_custom, or prompt_text must be selected.
 
 ## Scope
 The program supports three scopes: code or text or image. Depending on which is selected, the program supports different models and prompts tailored for each option.
 
-If the "code" scope is selected, the program will identify student errors in the code sections of the assignment, comparing them to the solution code. Additionally, if the `--scope code` option is chosen, the `--question` option can also be specified to analyze the code for a particular question rather than the entire file. Currently, you can specify a question number if the file type is jupyter notebook.  In order to use the `--question` option, the question code in both the solution and submission file must be delimited by '## Task {#}'. See the File Formatting Assumptions section. 
+If the "code" scope is selected, the program will identify student errors in the code sections of the assignment, comparing them to the solution code. Additionally, if the `--scope code` option is chosen, the `--question` option can also be specified to analyze the code for a particular question rather than the entire file. Currently, you can specify a question number if the file type is jupyter notebook.  In order to use the `--question` option, the question code in both the solution and submission file must be delimited by '## Task {#}'. See the File Formatting Assumptions section.
 
-
-If the "text" scope is selected, the program will identify student errors in the written responses of the assignment, comparing them to the solution's rubric for written responses. If the 'text' scope is chosen, then 'pdf' must be chosen for the submission type. 
+If the "text" scope is selected, the program will identify student errors in the written responses of the assignment, comparing them to the solution's rubric for written responses. If the 'text' scope is chosen, then 'pdf' must be chosen for the submission type.
 
 If the "image" scope is selected, the program will identify issues in submission images, optionally comparing them to reference solutions. Question numbers can be specified by adding the tag `markus_question_name: <question name>` to the metadata for the code cell that generates the submission image. The previous cell's markdown content will be used as the question's context.
 
 ## Submission Type
 The program automatically detects submission type based on file extensions in the assignment directory:
 - Files ending with `_submission.ipynb` → jupyter notebook
-- Files ending with `_submission.py` → python file  
+- Files ending with `_submission.py` → python file
 - Files ending with `_submission.pdf` → PDF document
 
 The user can also explicitly specify the submission type using the `--submission_type` argument if auto-detection is not suitable.
@@ -65,57 +67,63 @@ Currently, jupyter notebook, pdf, and python assignments are supported.
 
 ## Prompts
 The user can use this argument to specify which predefined prompt they wish the model to use.
-To view the predefined prompts, navigate to the ai_feedback/data/prompts folder. Each prompt is stored as a JSON object with the following structure:
+To view the predefined prompts, navigate to the ai_feedback/data/prompts/user folder. Each prompt is stored as a markdown file that can contain template placeholders with the following structure:
 
-```json
-{
-  "prompt_content": "The text prompt that will be sent to the model",
-  "include_submission_image": false,
-  "include_solution_image": false
-}
+```markdown
+Consider this question:
+{context}
+
+{submission_image}
+
+Do the graphs in the attached image solve the problem? Do not include an example solution.
 ```
 
+Prompt files are now stored as markdown (.md) files in the `ai_feedback/data/prompts/user/` directory. Each prompt can contain template placeholders that will be automatically replaced with relevant content.
+
 Prompt Naming Conventions:
-- Prompts to be used when --scope code is selected are prefixed with code_{}.json
-- Prompts to be used when --scope image is selected are prefixed with image_{}.json
-- Prompts to be used when --scope text is selected are prefixed with text_{}.json
+- Prompts to be used when --scope code is selected are prefixed with code_{}.md
+- Prompts to be used when --scope image is selected are prefixed with image_{}.md
+- Prompts to be used when --scope text is selected are prefixed with text_{}.md
 
 If the --scope argument is provided and its value does not match the prefix of the selected --prompt, an error message will be displayed.
 
-Prompt Extra Options (for image scope only):
-- `include_submission_image` (true/false): Whether the student submission image should be attached in the prompt.
-- `include_solution_image` (true/false): Whether the solution image should be attached in the prompt.
+All prompts are treated as templates that can contain special placeholder blocks, the following template placeholders are automatically replaced:
+- `{context}` - Question context
+- `{file_references}` - List of files being analyzed with descriptions
+- `{file_contents}` - Full contents of files with line numbers
+- `{submission_image}` - Student submission image
+- `{solution_image}` - Reference solution image
 
 ### Code Scope Prompts
 | Prompt Name          | Description                                  |
 |------------------|--------------------------------------------------|
-| `code_explanation.json` | Outputs paragraph explanation of errors. |
-| `code_hint.json`       | Outputs short hints on what errors are. |
-| `code_lines.json`        | Outputs only code lines where errors are caused.       |
-| `code_table.json`   | Outputs a table which shows the question requirement, the student’s attempt, and potential issue.  |
-| `code_template.json`     | Outputs a template format specified to include error type, description, solution. |
-| `code_annotation.json`     | Outputs a json object of a list of annotation objects to display student errors on MarkUs. This is intended for markus integration usage. |
+| `code_explanation.md` | Outputs paragraph explanation of errors. |
+| `code_hint.md`       | Outputs short hints on what errors are. |
+| `code_lines.md`        | Outputs only code lines where errors are caused.       |
+| `code_table.md`   | Outputs a table which shows the question requirement, the student’s attempt, and potential issue.  |
+| `code_template.md`     | Outputs a template format specified to include error type, description, solution. |
+| `code_annotation.md`     | Outputs a json object of a list of annotation objects to display student errors on MarkUs. This is intended for markus integration usage. |
 
 ### Image Scope Prompts
 | Prompt Name          | Description                                  |
 |------------------|--------------------------------------------------|
-| `image_analyze.json` | Outputs whether the submission image answers the question provided by the context. |
-| `image_analyze_annotations.json` | Outputs whether the submission image answers the question provided by the context as a list of JSON objects, each with a description of the issue and a location on the image. Intended for MarkUs integration usage. |
-| `image_compare.json` | Outputs table comparing style elements between submission and solution graphs. |
-| `image_style.json` | Outputs table checking the style elements in a submission graph. |
-| `image_style_annotations.json` | Outputs evaluations of style elements in a submission graph as a list of JSON objects, each with a description of the issue and a location on the image. Intended for MarkUs integration usage. |
+| `image_analyze.md` | Outputs whether the submission image answers the question provided by the context. |
+| `image_analyze_annotations.md` | Outputs whether the submission image answers the question provided by the context as a list of JSON objects, each with a description of the issue and a location on the image. Intended for MarkUs integration usage. |
+| `image_compare.md` | Outputs table comparing style elements between submission and solution graphs. |
+| `image_style.md` | Outputs table checking the style elements in a submission graph. |
+| `image_style_annotations.md` | Outputs evaluations of style elements in a submission graph as a list of JSON objects, each with a description of the issue and a location on the image. Intended for MarkUs integration usage. |
 
 ### Text Scope Prompts
 | Prompt Name          | Description                                  |
 |------------------|--------------------------------------------------|
-| `text_pdf_analyze.json` | Outputs whether the submission written response matches all the criteria specified in the solution. |
+| `text_pdf_analyze.md` | Outputs whether the submission written response matches all the criteria specified in the solution. |
 
 
 ## Prompt_text
-Additonally, the user can pass in a string through the --prompt_text argument. This will either be concatenated to the prompt if --prompt is used or fed in as the only prompt if --prompt is not used. 
+Additonally, the user can pass in a string through the --prompt_text argument. This will either be concatenated to the prompt if --prompt is used or fed in as the only prompt if --prompt is not used.
 
 ## Prompt_custom
-The user can pass in their own custom prompt file and use the --prompt_custom argument to flag that the model should use the custom prompt. This can be used instead of choosing one of the predefined prompts. 
+The user can pass in their own custom prompt file and use the --prompt_custom argument to flag that the model should use the custom prompt. This can be used instead of choosing one of the predefined prompts.
 
 ## Models
 The models used can be seen under the ai_feedback/models folder.
@@ -162,19 +170,13 @@ Models:
 - llava:34b [Documentation](https://ollama.com/library/llava)
 
 ## Output Structure
-- When `--output markdown` is selected, the script will:
-1. Load `ai_feedback/data/output/output_template.md`
+- When `--output filepath` is given, the script will:
+1. Load the template for the output based on the `--output_template` (Options defined in ai_feedback/helpers/arg_options.OutputTemplate)
 2. Format it with the provided arguments and processing results.
-3. Save it under `ai_feedback/test_responses_md/<assignment>/<model>/<prompt>_<timestamp>.md`
+3. Save it under `filepath`
 
-Example Markdown file name:
-```
-ai_feedback/test_responses_md/test1/openai/code_table_20250310_143500.md
-```
-
-- When the `--output` argument is not given, the prompt used and generated response will be sent to stdout.
-- When `--output direct` is selected, only the generated response will be sent to stdout.
-
+- When the `--output` argument is not given, the prompt used and generated response will be sent to stdout in the format selected by `--output_template`.
+- When the `--output_template` argument is not given it will default to `response_only` which is only the response from the model
 ## Test Files
 - Any subdirectory of /test_submissions can be run locally. More examples can be added to this directory using a similar fashion.
 
@@ -219,16 +221,16 @@ To grade a specific question using the `--question` argument, add the tag `marku
 
 ## Package Usage
 
-In order to run this package locally: 
+In order to run this package locally:
 
 Ensure you have the environment variables set up (see Models section above).
 
-When you are in a terminal in the repo, run: 
+When you are in a terminal in the repo, run:
 ```bash
 pip install -e .
 ```
 
-Run the program: 
+Run the program:
 ```bash
 python -m ai_feedback \
   --submission_type <file_type> \
@@ -241,7 +243,10 @@ python -m ai_feedback \
   --solution_image <image_file_path> \
   --question <question_number> \
   --model <model_name> \
-  --output <markdown|stdout|direct>
+  --output <file_path_to> \
+  --output_template <file_name> \
+  --system_prompt <prompt_file_path> \
+  --llama_mode <server|cli>
 ```
 
 - See the Arguments section for the different command line argument options, or run this command to see help messages and available choices:
@@ -251,30 +256,51 @@ python -m ai_feedback -h
 
 ### Example Commands
 
-#### Evaluate cnn_example test using openAI model 
+#### Evaluate cnn_example test using openAI model
 ```bash
-python -m ai_feedback --prompt code_lines --scope code --submission test_submissions/cnn_example/cnn_submission --solution test_submissions/cnn_example/cnn_solution.py --model openai --output stdout
+python -m ai_feedback --prompt code_lines --scope code --submission test_submissions/cnn_example/cnn_submission --solution test_submissions/cnn_example/cnn_solution.py --model openai
 ```
 
-#### Evaluate cnn_example test using openAI model and custom prompt 
+#### Evaluate cnn_example test using openAI model and custom prompt
 ```bash
-python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission test_submissions/cnn_example/cnn_submission.py --model openai --output stdout
+python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission test_submissions/cnn_example/cnn_submission.py --model openai
 ```
 
-#### Evaluate pdf_example test using openAI model 
+#### Evaluate pdf_example test using openAI model
 ```bash
-python -m ai_feedback --prompt text_pdf_analyze --scope text --submission test_submissions/pdf_example/student_pdf_submission.pdf --model openai --output direct
+python -m ai_feedback --prompt text_pdf_analyze --scope text --submission test_submissions/pdf_example/student_pdf_submission.pdf --model openai
 ```
 
-#### Evaluate question1 of test1 of ggr274 homework using DeepSeek model 
+#### Evaluate question1 of test1 of ggr274 homework using DeepSeek model
 ```bash
 python -m ai_feedback --prompt code_table \
-  --scope code --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb --question 1 --model deepSeek-R1:70B --output markdown
+  --scope code --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb --question 1 --model deepSeek-R1:70B
 ```
 
-#### Evaluate the image for question 5b of ggr274 homework with Llama3.2-vision 
+#### Evaluate the image for question 5b of ggr274 homework with Llama3.2-vision
 ```sh
-python -m ai_feedback --prompt image_analyze --scope image --solution ./test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision:90b --output stdout
+python -m ai_feedback --prompt image_analyze --scope image --solution ./test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision:90b
+```
+
+### Evaluate the bfs example with remote model to test_file using the verbose template
+```sh
+python -m ai_feedback --prompt code_lines --scope code --solution ./test_submissions/bfs_example/bfs_solution.py --submission test_submissions/bfs_example/bfs_submission.py --model remote --output --output test_file --output_template verbose
+```
+
+#### Evalute the Jupyter notebook of test1 of ggr274 using DeepSeek-v3 via llama.cpp server
+```sh
+python3 -m ai_feedback --prompt code_table --scope code \
+        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --model deepSeek-v3 --llama_mode server
+```
+
+#### Evalute the Jupyter notebook of test1 of ggr274 using DeepSeek-v3 via llama.cpp cli
+```sh
+python3 -m ai_feedback --prompt code_table --scope code \
+        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --model deepSeek-v3 --llama_mode cli
 ```
 
 #### Using Ollama
@@ -288,7 +314,7 @@ ssh username@teach.cs.utoronto.ca
 ssh bigmouth
 ```
 3. Ensure you're in the project directory
-4. Start Ollama 
+4. Start Ollama
 ```bash
 ollama start
 ```
@@ -306,76 +332,101 @@ This python package can be used as a dependency in the Markus Autotester, in ord
 - /markus_test_scripts contains scripts which can be uploaded to the autotester in order to generate LLM Feedback
 - Currently, only openAI and Claude models are supported.
 - The /test_submissions directory has mock assignment submissions, solutions, and test files, used for testing the markus integration. These files can be submitted on the markus autotester along with the llm script files.
-- Within these llm script files, the models and prompts used can be changed by editing the command line arguments, through the run_llm() function. 
+- Within these llm script files, the models and prompts used can be changed by editing the command line arguments, through the run_llm() function.
 
-Files: 
+Files:
 - python_tester_llm_code.py: Runs LLM on any code assignment (solution file, submission file) uploaded to the autotester. First, creates general feedback and displays as overall comments and test output (can use any prompt and model). Second, feeds in the output of the first LLM response into the model again, asking it to create annotations for the student's mistakes. (Ensure to change submission file import name.)
 - llm_helpers.py: contains helper functions needed to run llm scripts.
-- python_tester_llm_pdf.py: Runs LLM on any pdf assignment (solution file and submission file) uploaded to the autotester. Creates general feedback about whether the student's written responses matches the instructors feedback. Dislayed in test outputs and overall comments. 
-- custom_tester_llm_code.sh: Runs LLM on assignments (solution file, submission file, test output file) uploaded to the custom autotester. Currently, supports jupyter notebook files uploaded. Can specify prompt and model used in the script. Displays in overall comments and in test outputs. Can optionally uncomment the annotations section to display annotations, however the annotations will display on the .txt version of the file uploaded by the student, not the .ipynb file. 
+- python_tester_llm_pdf.py: Runs LLM on any pdf assignment (solution file and submission file) uploaded to the autotester. Creates general feedback about whether the student's written responses matches the instructors feedback. Dislayed in test outputs and overall comments.
+- custom_tester_llm_code.sh: Runs LLM on assignments (solution file, submission file, test output file) uploaded to the custom autotester. Currently, supports jupyter notebook files uploaded. Can specify prompt and model used in the script. Displays in overall comments and in test outputs. Can optionally uncomment the annotations section to display annotations, however the annotations will display on the .txt version of the file uploaded by the student, not the .ipynb file.
 
+<<<<<<< Updated upstream
 
 #### Python AutoTester Usage
-##### Code Scope 
+##### Code Scope
 1. Ensure the student has submitted a submission file (_submission suffixed).
-2. Ensure the instructor has submitted a solution file (_solution suffixed), llm_helpers.py (located in /markus_test_scripts), and python_tester_llm_code.py (located in /markus_test_scripts). Instructor can also upload another pytest file which can be run as its own test group. 
+2. Ensure the instructor has submitted a solution file (_solution suffixed), llm_helpers.py (located in /markus_test_scripts), and python_tester_llm_code.py (located in /markus_test_scripts). Instructor can also upload another pytest file which can be run as its own test group.
 3. Ensure the submission import statement in python_tester_llm_code.py matches the name of the student's submission file name.
 4. Create a Python Autotester Test Group to run the LLM File.
-5. In the Package Requirements section of the Test Group Settings for the LLM file, put: 
+5. In the Package Requirements section of the Test Group Settings for the LLM file, put:
 ``` bash
-git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback 
+git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 ```
-Along with any other packages that the submission or solution file uses. 
+Along with any other packages that the submission or solution file uses.
 
-6. Ensure the Timeout is set to 120 seconds or longer. 
+6. Ensure the Timeout is set to 120 seconds or longer.
 7. Ensure Markus Autotester docker container has the API Keys in an .env file and specified in the docker compose file.
 
-##### Text Scope 
-- Do the same as the code scope, but ensure that the student submission and instructor solution are .pdf files with the same naming assumption. Also, ensure that python_tester_llm_pdf.py is uploaded as the test script. 
+##### Text Scope
+- Do the same as the code scope, but ensure that the student submission and instructor solution are .pdf files with the same naming assumption. Also, ensure that python_tester_llm_pdf.py is uploaded as the test script.
 
 #### Running Python Autotester Examples
-##### CNN Example 
-- Look at the /test_submissions/cnn_example directory for the following files 
+##### CNN Example
+- Look at the /test_submissions/cnn_example directory for the following files
 - Instructor uploads: cnn_solution.py, cnn_test.py, llm_helpers.py, python_tester_llm_code.py files
 - Separate test groups for cnn_test.py and python_tester_llm_code.py
 - cnn_test.py Autotester package requirements: torch numpy
 - python_tester_llm_code.py Autotester package requirements: git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback numpy torch
 - Student uploads: cnn_submission.pdf
 
-##### BFS Example 
-- Look at the /test_submissions/bfs_example directory for the following files 
+##### BFS Example
+- Look at the /test_submissions/bfs_example directory for the following files
 - Instructor uploads: bfs_solution.py, test_bfs.py, llm_helpers.py, python_tester_llm_code.py files
 - Separate test groups for test_bfs.py and python_tester_llm_code.py
 - python_tester_llm_code.py Autotester package requirements: git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 - Student uploads: bfs_submission.pdf
 
-##### PDF Example 
-- Look at the /test_submissions/pdf_example directory for the following files 
+##### PDF Example
+- Look at the /test_submissions/pdf_example directory for the following files
 - Instructor uploads: instructor_pdf_solution.pdf, llm_helpers.py, python_tester_llm_pdf.py files
 - Autotester package requirements: git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 - Student uploads: student_pdf_submission.pdf
 
-#### Custom Tester Usage 
+#### Custom Tester Usage
 1. Ensure the student has submitted a submission file (_submission suffixed).
 2. Ensure the instructor has submitted a solution file (_solution suffixed) and custom_tester_llm_code.sh (located in /markus_test_scripts). Instructor can also upload another script used to run its own test group. (See below for GGR274 Example.)
-3. In the Markus Autotesting terminal: 
+3. In the Markus Autotesting terminal:
 ``` bash
  docker exec -it -u 0 markus-autotesting-server-1 /bin/bash
 ```
-Then as the root user, install the package: 
+Then as the root user, install the package:
 ``` bash
 /home/docker/.autotesting/scripts/defaultvenv/bin/pip install git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 ```
-Also pip install other packages that the submission or solution file uses. 
+Also pip install other packages that the submission or solution file uses.
 
 4. Create a Custom Autotester Test Group to run the LLM script file.
-5. Ensure the Timeout is set to 120 seconds or longer. 
+5. Ensure the Timeout is set to 120 seconds or longer.
 6. Ensure Markus Autotester docker container has the API Keys in an .env file and specified in the docker compose file.
 
-##### GGR274 Test1 Example 
-- Look at the /test_submissions/ggr274_hw5_custom_tester directory for the following files 
+##### GGR274 Test1 Example
+- Look at the /test_submissions/ggr274_hw5_custom_tester directory for the following files
 - Instructor uploads: Homework_5_solution.ipynb, test_hw5.py, test_output.txt, custom_tester_llm_code.sh, run_hw5_test.sh
 - Two separate test groups: one for run_hw5_test.sh, and one for custom_tester_llm_code.sh
 - Student uploads: test1_submission.ipynb,  test1_submission.txt
 
 NOTE: if the LLM Test Group appears to be blank/does not turn green, try increasing the timeout.
+=======
+#### Custom Tester
+- custom_tester_llm_code.sh: Runs LLM on any assignment (solution file, submission file, test output file) uploaded to the autotester. Can specify prompt and model used in the script. Displays in overall comments and in test outputs.
+
+## Developers
+
+To install project dependencies, including development dependencies:
+
+```console
+$ pip install -e .[dev]
+```
+
+To install pre-commit hooks:
+
+```console
+$ pre-commit install
+```
+
+To run the test suite:
+
+```console
+$ pytest
+```
+>>>>>>> Stashed changes

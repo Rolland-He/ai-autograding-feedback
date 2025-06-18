@@ -1,13 +1,12 @@
-import os
 import sys
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple
 
 from .helpers.arg_options import model_mapping
 from .helpers.template_utils import render_prompt_template
 
 
-def process_text(args, prompt: str) -> Tuple[str, str]:
+def process_text(args, prompt: str, system_instructions: str) -> Tuple[str, str]:
     """
     Processes text-based assignment files and generates a response using the selected model.
 
@@ -18,6 +17,7 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
     Args:
         args: Command-line argument namespace containing assignment, model, scope, and question attributes.
         prompt (str): The initial user prompt.
+        system_instructions (str): instructions for the model
 
     Returns:
         Tuple[str, str]: A tuple containing the request and the model's generated response.
@@ -35,9 +35,11 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
         if not solution_file.is_file():
             raise FileNotFoundError(f"Solution file '{solution_file}' not found.")
 
-    assignment_files = [args.submission, args.solution] if solution_file else [args.submission]
+    test_output = Path(args.test_output) if args.test_output else None
 
-    rendered_prompt = render_prompt_template(prompt, assignment_files=assignment_files)
+    rendered_prompt = render_prompt_template(
+        prompt, solution=solution_file, submission=submission_file, test_output=test_output, question_num=args.question
+    )
 
     if args.model in model_mapping:
         model = model_mapping[args.model]()
@@ -52,6 +54,8 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
             submission_file=submission_file,
             scope=args.scope,
             question_num=args.question,
+            system_instructions=system_instructions,
+            llama_mode=args.llama_mode,
         )
     else:
         request, response = model.generate_response(
@@ -59,6 +63,8 @@ def process_text(args, prompt: str) -> Tuple[str, str]:
             solution_file=solution_file,
             submission_file=submission_file,
             scope=args.scope,
+            system_instructions=system_instructions,
+            llama_mode=args.llama_mode,
         )
 
     return request, response

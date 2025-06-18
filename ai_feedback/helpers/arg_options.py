@@ -1,4 +1,5 @@
 from enum import Enum
+
 from .. import models
 
 
@@ -61,6 +62,7 @@ model_mapping = {
     "codellama:latest": models.CodeLlamaModel,
     "claude-3.7-sonnet": models.ClaudeModel,
     "remote": models.RemoteModel,
+    "deepSeek-v3": models.DeepSeekV3Model,
 }
 
 
@@ -77,6 +79,7 @@ class Models(Enum):
     CODELLAMA = "codellama:latest"
     CLAUDE = "claude-3.7-sonnet"
     REMOTE = "remote"
+    DEEPSEEKV3 = "deepSeek-v3"
 
     def __str__(self):
         return self.value
@@ -95,14 +98,36 @@ class FileType(Enum):
         return self.value
 
 
-class OutputType(Enum):
+class OutputTemplate(Enum):
     """
-    Enum representing the output format types for the LLM's results.
+    Enum representing different output template types that the application can process.
     """
 
-    STDOUT = "stdout"
-    MARKDOWN = "markdown"
-    DIRECT = "direct"
+    RESPONSE_ONLY = 'response_only'
+    VERBOSE = 'verbose'
+
+    def __str__(self):
+        return self.value
+
+
+class SystemPrompt(Enum):
+    """
+    Enum representing different types of system prompts for AI models.
+    """
+
+    TEST_FEEDBACK = "student_test_feedback"
+
+    def __str__(self):
+        return self.value
+
+
+class LlamaMode(Enum):
+    """
+    Enum representing the output mode for invoking llama.cpp.
+    """
+
+    SERVER = "server"
+    CLI = "cli"
 
     def __str__(self):
         return self.value

@@ -1,10 +1,11 @@
 import os
-from typing import List, Optional
-from dotenv import load_dotenv
 from pathlib import Path
+from typing import List, Optional
+
 import openai
+from dotenv import load_dotenv
+
 from .Model import Model
-from ..helpers.constants import SYSTEM_INSTRUCTIONS
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,27 +25,24 @@ class OpenAIModelVector(Model):
         super().__init__()
 
         self.client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.vector_store = self.client.vector_stores.create(
-            name="Markus LLM Vector Store"
-        )
+        self.vector_store = self.client.vector_stores.create(name="Markus LLM Vector Store")
         self.model = self.client.beta.assistants.create(
             name="Markus LLM model",
             model="gpt-4-turbo",
-            instructions=SYSTEM_INSTRUCTIONS,
             tools=[{"type": "file_search"}],
-            tool_resources={
-                "file_search": {"vector_store_ids": [self.vector_store.id]}
-            },
+            tool_resources={"file_search": {"vector_store_ids": [self.vector_store.id]}},
         )
 
     def generate_response(
         self,
         prompt: str,
         submission_file: Path,
+        system_instructions: str,
         question_num: Optional[int] = None,
         solution_file: Optional[Path] = None,
         test_output: Optional[Path] = None,
         scope: Optional[str] = None,
+        llama_mode: Optional[str] = None,
     ) -> tuple[str, str]:
         """
         Generate a response from the OpenAI model using the provided prompt and assignment files.
@@ -56,10 +54,13 @@ class OpenAIModelVector(Model):
             test_output (Optional[Path]): The path to a file to store the response to.
             scope (Optional[str]): The path to a file to store the response to.
             question_num (Optional[int]): An optional question number.
+            system_instructions (str): instructions for the model
+            llama_mode (Optional[str]): Optional mode to invoke llama.cpp in.
 
         Returns:
             tuple[str, str]: A tuple containing the full system request and the model's text response.
         """
+        self.model = self.client.beta.assistants.update(assistant_id=self.model.id, instructions=system_instructions)
         if not self.model:
             raise RuntimeError("Model was not created successfully.")
 
@@ -79,7 +80,7 @@ class OpenAIModelVector(Model):
         response = self._call_openai(prompt)
         self._cleanup_resources(file_ids)
 
-        request = f"\n{SYSTEM_INSTRUCTIONS}\n{prompt}"
+        request = f"\n{system_instructions}\n{prompt}"
         return request, response
 
     def _upload_file(self, file_path: Path) -> str:
@@ -94,9 +95,7 @@ class OpenAIModelVector(Model):
         """
         with open(file_path, "rb") as f:
             response = self.client.files.create(file=f, purpose="assistants")
-            self.client.vector_stores.files.create(
-                vector_store_id=self.vector_store.id, file_id=response.id
-            )
+            self.client.vector_stores.files.create(vector_store_id=self.vector_store.id, file_id=response.id)
         return response.id
 
     def _call_openai(self, prompt: str) -> str:
@@ -111,18 +110,12 @@ class OpenAIModelVector(Model):
         """
         thread = self.client.beta.threads.create()
 
-        self.client.beta.threads.messages.create(
-            thread_id=thread.id, role="user", content=prompt
-        )
+        self.client.beta.threads.messages.create(thread_id=thread.id, role="user", content=prompt)
 
-        run = self.client.beta.threads.runs.create(
-            thread_id=thread.id, assistant_id=self.model.id
-        )
+        run = self.client.beta.threads.runs.create(thread_id=thread.id, assistant_id=self.model.id)
 
         while run.status not in ["completed", "failed"]:
-            run = self.client.beta.threads.runs.retrieve(
-                thread_id=thread.id, run_id=run.id
-            )
+            run = self.client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
 
         if run.status == "failed":
             print("Error details:", run.last_error)
@@ -149,9 +142,7 @@ class OpenAIModelVector(Model):
         """
         for file_id in file_ids:
             self.client.files.delete(file_id)
-            self.client.vector_stores.files.delete(
-                vector_store_id=self.vector_store.id, file_id=file_id
-            )
+            self.client.vector_stores.files.delete(vector_store_id=self.vector_store.id, file_id=file_id)
 
     def _delete_all_models(self) -> None:
         """
@@ -168,6 +159,4 @@ class OpenAIModelVector(Model):
         files = self.client.files.list()
         for file in files:
             self.client.files.delete(file.id)
-            self.client.vector_stores.files.delete(
-                vector_store_id=self.vector_store.id, file_id=file.id
-            )
+            self.client.vector_stores.files.delete(vector_store_id=self.vector_store.id, file_id=file.id)

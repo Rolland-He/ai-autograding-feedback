@@ -3,21 +3,19 @@ import json
 import os
 import sys
 from datetime import datetime
-from typing import Tuple
+from pathlib import Path
 
-from . import image_processing
-from . import code_processing
-from . import text_processing
+from . import code_processing, image_processing, text_processing
 from .helpers import arg_options
-from .helpers.constants import TEST_OUTPUTS_DIRECTORY, HELP_MESSAGES
+from .helpers.constants import HELP_MESSAGES, TEST_OUTPUTS_DIRECTORY
 
 
 def detect_submission_type(filename: str) -> str:
     """Automatically detect the submission type based on file extensions.
-    
+
     Args:
         filename (str): Path to the file.
-        
+
     Returns:
         str: The detected submission type ("jupyter", "python", or "pdf").
     """
@@ -27,14 +25,17 @@ def detect_submission_type(filename: str) -> str:
         return "python"
     elif filename.endswith(".pdf"):
         return "pdf"
-    
+
     print("Error: Could not auto-detect submission type.")
     sys.exit(1)
 
 
-def load_markdown_template() -> str:
+def load_markdown_template(template: str) -> str:
     """
     Loads the markdown template used for formatting output.
+
+    Args:
+        template (str): name of markdown template.
 
     Returns:
         str: The markdown template as a string.
@@ -43,13 +44,33 @@ def load_markdown_template() -> str:
         SystemExit: If the template file is not found, the program will print an error and exit.
     """
     try:
-        template_file = os.path.join(
-            os.path.dirname(__file__), "data/output/output_template.md"
-        )
+        template_file = os.path.join(os.path.dirname(__file__), f"data/output/{template}.md")
         with open(template_file, "r") as file:
             return file.read()
     except FileNotFoundError:
-        print("Error: Markdown template file 'output_template.md' not found.")
+        print(f"Error: Markdown template file '{template}.md' not found.")
+        sys.exit(1)
+
+
+def load_markdown_prompt(prompt_name: str) -> dict:
+    """Loads a markdown prompt file.
+
+    Args:
+        prompt_name (str): Name of the prompt file (without extension)
+
+    Returns:
+        dict: Dictionary containing prompt_content
+
+    Raises:
+        SystemExit: If the prompt file is not found
+    """
+    try:
+        prompt_file = os.path.join(os.path.dirname(__file__), f"data/prompts/user/{prompt_name}.md")
+        with open(prompt_file, "r") as file:
+            prompt_content = file.read()
+        return {"prompt_content": prompt_content}
+    except FileNotFoundError:
+        print(f"Error: Prompt file '{prompt_name}.md' not found in user subfolder.")
         sys.exit(1)
 
 
@@ -80,16 +101,8 @@ def main() -> int:
         required=False,
         help=HELP_MESSAGES["prompt"],
     )
-    parser.add_argument(
-        "--prompt_text",
-        type=str,
-        required=False,
-        help=HELP_MESSAGES["prompt_text"]
-    )
-    parser.add_argument(
-        "--prompt_custom",
-        action="store_true",
-        required=False)
+    parser.add_argument("--prompt_text", type=str, required=False, help=HELP_MESSAGES["prompt_text"])
+    parser.add_argument("--prompt_custom", action="store_true", required=False)
     parser.add_argument(
         "--scope",
         type=str,
@@ -97,24 +110,9 @@ def main() -> int:
         required=True,
         help=HELP_MESSAGES["scope"],
     )
-    parser.add_argument(
-        "--submission",
-        type=str,
-        required=True,
-        help=HELP_MESSAGES["submission"]
-    )
-    parser.add_argument(
-        "--solution",
-        type=str,
-        required=False,
-        default="",
-        help=HELP_MESSAGES["solution"])
-    parser.add_argument(
-        "--question",
-        type=str,
-        required=False,
-        help=HELP_MESSAGES["question"]
-    )
+    parser.add_argument("--submission", type=str, required=True, help=HELP_MESSAGES["submission"])
+    parser.add_argument("--solution", type=str, required=False, default="", help=HELP_MESSAGES["solution"])
+    parser.add_argument("--question", type=str, required=False, help=HELP_MESSAGES["question"])
     parser.add_argument(
         "--model",
         type=str,
@@ -125,29 +123,37 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=str,
-        choices=arg_options.get_enum_values(arg_options.OutputType),
         required=False,
-        default='stdout',
+        default='',
         help=HELP_MESSAGES["output"],
     )
+    parser.add_argument("--test_output", type=str, required=False, default=None, help=HELP_MESSAGES["test_output"])
+    parser.add_argument("--submission_image", type=str, required=False, help=HELP_MESSAGES["submission_image"])
+    parser.add_argument("--solution_image", type=str, required=False, help=HELP_MESSAGES["solution_image"])
     parser.add_argument(
-        "--test_output",
-        type=str,
+        "--output_template",
         required=False,
-        default=None,
-        help=HELP_MESSAGES["test_output"])
-    parser.add_argument(
-        "--submission_image",
         type=str,
-        required=False,
-        help=HELP_MESSAGES["submission_image"]
+        choices=arg_options.get_enum_values(arg_options.OutputTemplate),
+        default='response_only',
     )
     parser.add_argument(
-        "--solution_image",
+        "--system_prompt",
         type=str,
         required=False,
-        help=HELP_MESSAGES["solution_image"]
+        choices=arg_options.get_enum_values(arg_options.SystemPrompt),
+        help=HELP_MESSAGES["system_prompt"],
+        default="student_test_feedback",
     )
+    parser.add_argument(
+        "--llama_mode",
+        type=str,
+        choices=arg_options.get_enum_values(arg_options.LlamaMode),
+        required=False,
+        default="cli",
+        help=HELP_MESSAGES["llama_mode"],
+    )
+
     args = parser.parse_args()
 
     # Auto-detect submission type if not provided
@@ -155,6 +161,12 @@ def main() -> int:
         args.submission_type = detect_submission_type(args.submission)
 
     prompt_content = ""
+
+    system_prompt_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), f"data/prompts/system/{args.system_prompt}.md"
+    )
+    with open(system_prompt_path, "r") as file:
+        system_instructions = file.read()
 
     if args.prompt_custom:
         prompt_filename = os.path.join("./", f"{args.prompt_text}.txt")
@@ -164,27 +176,17 @@ def main() -> int:
     else:
         if args.prompt:
             if not args.prompt.startswith("image") and args.scope == "image":
-                print(
-                    "Error: The prompt must start with 'image'. Please re-run the command with a valid prompt."
-                )
+                print("Error: The prompt must start with 'image'. Please re-run the command with a valid prompt.")
                 sys.exit(1)
             if not args.prompt.startswith("code") and args.scope == "code":
-                print(
-                    "Error: The prompt must start with 'code'. Please re-run the command with a valid prompt."
-                )
+                print("Error: The prompt must start with 'code'. Please re-run the command with a valid prompt.")
                 sys.exit(1)
             if not args.prompt.startswith("text") and args.scope == "text":
-                print(
-                    "Error: The prompt must start with 'text'. Please re-run the command with a valid prompt."
-                )
+                print("Error: The prompt must start with 'text'. Please re-run the command with a valid prompt.")
                 sys.exit(1)
 
-            prompt_filename = os.path.join(
-                os.path.dirname(__file__), f"data/prompts/{args.prompt}.json"
-            )
-            with open(prompt_filename, "r") as prompt_file:
-                prompt = json.load(prompt_file)
-                prompt_content += prompt["prompt_content"]
+            prompt = load_markdown_prompt(args.prompt)
+            prompt_content += prompt["prompt_content"]
 
         if args.prompt_text:
             prompt_content += args.prompt_text
@@ -193,36 +195,28 @@ def main() -> int:
         prompt["prompt_content"] = prompt_content
         request, response = image_processing.process_image(args, prompt)
     elif args.scope == "text":
-        request, response = text_processing.process_text(args, prompt_content)
+        request, response = text_processing.process_text(args, prompt_content, system_instructions)
     else:
-        request, response = code_processing.process_code(args, prompt_content)
+        request, response = code_processing.process_code(args, prompt_content, system_instructions)
 
-    if args.output == "markdown":
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        assignment_directory = f"{TEST_OUTPUTS_DIRECTORY}/{args.model}"
-        os.makedirs(assignment_directory, exist_ok=True)
+    markdown_template = load_markdown_template(args.output_template)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_text = markdown_template.format(
+        question=args.question or "N/A",
+        model=args.model,
+        request=request,
+        response=response,
+        timestamp=timestamp,
+        submission=args.submission,
+    )
 
-        markdown_filename = f"{assignment_directory}/{args.prompt}_{timestamp}.md"
-
-        markdown_template = load_markdown_template()
-        markdown_output = markdown_template.format(
-            question=args.question if args.question else "N/A",
-            model=args.model,
-            request=request,
-            response=response,
-            timestamp=timestamp,
-            submission=args.submission,
-        )
-        with open(markdown_filename, "w") as md_file:
-            md_file.write(markdown_output)
-        print(f"Markdown report saved to `{markdown_filename}`")
-
-    elif args.output == "stdout":
-        print(response)
-
-    elif args.output == "direct":
-        print(response)
-
+    if args.output:
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, "w") as f:
+            f.write(output_text)
+    else:
+        print(output_text)
     return 0
 
 
