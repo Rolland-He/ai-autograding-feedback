@@ -21,12 +21,12 @@ def fizzbuzz(n: int) -> list:
     [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 
     11, 'Fizz', 13, 14, 'FizzBuzz']
     """
-    output = []
+    final_result = []
     for idx in range(1, n + 1):
         output = ''
         if idx % 3 == 0:
             output += 'Fizz'
         if idx % 5 == 0:
             output += 'Buzz'
-        output.append(output or idx)
-    return output
+        final_result.append(output or idx)
+    return final_result
