@@ -1,8 +1,7 @@
 providers:
-  - id: exec:deepseek-v3
+  - id: exec:python3 -m ai_feedback
     config:
       command: >
-        python3 -m ai_feedback
         --scope code
         --submission {{vars.submission_file}}
         --solution {{vars.solution_file}}
@@ -11,13 +10,12 @@ providers:
         --prompt {{vars.prompt}}
         --prompt_text "{{input}}"
 
-  - id: exec:deepseek-r1
-    config:
-      command: >
-        python3 -m ai_feedback
-        --scope code
-        --submission {{vars.submission_file}}
-        --solution {{vars.solution_file}}
-        --model deepSeek-R1:70B
-        --prompt {{vars.prompt}}
-        --prompt_text "{{input}}"
+#  - id: exec:python3 -m ai_feedback
+#    config:
+#      command: >
+#        --scope code
+#        --submission {{vars.submission_file}}
+#        --solution {{vars.solution_file}}
+#        --model deepSeek-R1:70B
+#        --prompt {{vars.prompt}}
+#        --prompt_text "{{input}}"
