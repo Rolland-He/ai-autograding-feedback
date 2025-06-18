@@ -14,19 +14,20 @@ def fizzbuzz(n: int) -> list:
     Returns:
         list: A list containing the FizzBuzz results from 1 to n.
 
-    >>> fizzbuzz(5)
-    [1, 2, 'Fizz', 4, 'Buzz']
+    Examples:
+        >>> fizzbuzz(5)
+        [1, 2, 'Fizz', 4, 'Buzz']
 
-    >>> fizzbuzz(15)
-    [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 
-    11, 'Fizz', 13, 14, 'FizzBuzz']
+        >>> fizzbuzz(15)
+        [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 
+        11, 'Fizz', 13, 14, 'FizzBuzz']
     """
     result = []
-    for i in range(1, n):
-        if i % 3 == 0:
-            result.append("Fizz")
-        elif i % 5 == 0:
-            result.append("Buzz")
-        else:
-            result.append(i)
+    for current_number in range(1, n + 1):
+        output = ''
+        if current_number % 3 == 0:
+            output += 'Fizz'
+        if current_number % 5 == 0:
+            output += 'Buzz'
+        result.append(output or current_number)
     return result
