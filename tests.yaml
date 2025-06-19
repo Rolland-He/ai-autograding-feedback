@@ -1,13 +1,13 @@
-- input: "Evaluate student submission."
-  vars:
+- vars:
     submission_file: test_submissions/csc263_opt_connected/correct_submission/correct_submission.py
     solution_file: test_submissions/csc263_opt_connected/solution.py
     prompt: code_table
     model: deepSeek-R1:70B
+    scope: code
 
-- input: "Give feedback on the correct solution."
-  vars:
+- vars:
     submission_file: test_submissions/csc263_opt_connected/fail_submission/fail_submission.py
     solution_file: test_submissions/csc263_opt_connected/solution.py
     prompt: code_table
     model: deepSeek-v3
+    scope: code

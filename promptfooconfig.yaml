@@ -1,7 +1,8 @@
 providers:
   - id: 'file://tests/promptfoo_test_runner.py'
 
-prompts: ./prompts.yaml
+tests: file://tests.yaml
+
 
 columns:
   - name: prompt

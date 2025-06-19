@@ -1,30 +1,47 @@
 import subprocess
 
 
-def call_api(prompt: str, vars: dict, tools: list = None) -> str:
-    result = subprocess.run(
-        [
-            "python3",
-            "-m",
-            "ai_feedback",
-            "--scope",
-            "code",
-            "--submission",
-            vars["submission_file"],
-            "--solution",
-            vars["solution_file"],
-            "--model",
-            vars["model"],
-            "--prompt",
-            vars["prompt"],
-            "--prompt_text",
-            prompt,
-        ],
-        capture_output=True,
-        text=True,
-    )
+def call_api(prompt: str, context: dict, metadata: dict) -> dict:
+    """
+    Function that promptfoo will call
 
-    if result.returncode != 0:
-        return f"[ERROR] {result.stderr}"
+    Args:
+        prompt (str): The prompt to be called
+        context (dict): The context of the tests
+        metadata (dict): The all metadata that is associated with the test
 
-    return result.stdout
+    Returns:
+        dict: The output of the command or error message
+    """
+    options = metadata['vars']
+
+    try:
+        result = subprocess.run(
+            [
+                "python3",
+                "-m",
+                "ai_feedback",
+                "--scope",
+                options['scope'],
+                "--submission",
+                options["submission_file"],
+                "--solution",
+                options["solution_file"],
+                "--model",
+                options["model"],
+                "--prompt",
+                options["prompt"],
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+        if result.returncode != 0:
+            output = f"[ERROR] {result.stderr}"
+        else:
+            output = result.stdout.strip()
+
+    except Exception as e:
+        output = f"[EXCEPTION] {e}"
+
+    return {"output": output}
