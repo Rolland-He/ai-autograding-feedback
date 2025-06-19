@@ -1,5 +1,5 @@
 - vars:
-    submission_file: test_submissions/csc263_opt_connected/fail_submission/correct_submission.py
+    submission_file: test_submissions/csc263_opt_connected/correct_submission/correct_submission.py
     solution_file: test_submissions/csc263_opt_connected/solution.py
     prompt: code_table
     model: deepSeek-v3
