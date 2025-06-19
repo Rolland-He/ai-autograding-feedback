@@ -1,9 +1,9 @@
 providers:
-  - id: 'file://tests/promptfoo_test_runner.py'
+  - id: 'file://promptfoo_test_runner.py'
 
-tests:
-  - file://tests/promptfoo_tests/deepseek-v3_tests.yaml
-  - file://tests/promptfoo_tests/deepseek_r1_tests.yaml
+#tests:
+#  - file://promptfoo/tests/promptfoo_tests/deepseek-v3_tests.yaml
+#  - file://promptfoo/tests/promptfoo_tests/deepseek_r1_tests.yaml
 
 
 columns:
