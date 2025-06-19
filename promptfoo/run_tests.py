@@ -55,13 +55,13 @@ def run_promptfoo_tests(test_path: str, output_file: str):
 
 
 def main():
-    # llama_proc = start_llama_server()
+    llama_proc = start_llama_server()
     time.sleep(10)
 
     try:
         run_promptfoo_tests("tests/deepseek-v3_tests.yaml", "deepseek-v3_results.json")
     finally:
-        # stop_process(llama_proc)
+        stop_process(llama_proc)
         time.sleep(5)
 
     run_promptfoo_tests("tests/deepseek_r1_tests.yaml", "deepseek_r1_results.json")
