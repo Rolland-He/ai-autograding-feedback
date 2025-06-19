@@ -48,6 +48,6 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
             output = result.stdout.strip()
 
     except Exception as e:
-        output = f"[EXCEPTION] {e}"
+        raise RuntimeError(f"[EXCEPTION] {e}")
 
     return {"output": output}
