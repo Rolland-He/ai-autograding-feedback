@@ -16,8 +16,8 @@ def start_llama_server():
     proc = subprocess.Popen(
         cmd,
         cwd='/data1/GGUF',
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        # stdout=subprocess.PIPE,
+        # stderr=subprocess.PIPE,
     )
     return proc
 
