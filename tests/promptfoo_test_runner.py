@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 
@@ -16,6 +17,8 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
     options = metadata['vars']
 
     try:
+        env = os.environ.copy()
+
         result = subprocess.run(
             [
                 "python3",
@@ -33,6 +36,7 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 options["prompt"],
             ],
             capture_output=True,
+            env=env,
             text=True,
         )
 
