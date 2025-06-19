@@ -43,7 +43,7 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
         )
 
         if result.returncode != 0:
-            output = f"[ERROR] {result.stderr}"
+            raise RuntimeError(f"ai_feedback failed (rc={result.returncode}):\n{result.stderr}")
         else:
             output = result.stdout.strip()
 
