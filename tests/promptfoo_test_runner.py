@@ -34,6 +34,8 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 options["model"],
                 "--prompt",
                 options["prompt"],
+                "--llama_mode",
+                "server",
             ],
             capture_output=True,
             env=env,
