@@ -4,6 +4,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc263_opt_connected/fail_submission/fail_submission.py
@@ -11,6 +12,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc263_opt_connected/incorrect_algo_submission/incorrect_algo_submission.py
@@ -18,6 +20,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc263_opt_connected/style_issues_submission/style_issues_submission.py
@@ -25,6 +28,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc108/correct_submission/correct_submission.py
@@ -32,6 +36,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc108/correctness_1_submission/correctness_1_submission.py
@@ -39,6 +44,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc108/correctness_2_submission/correctness_2_submission.py
@@ -46,6 +52,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc108/efficiency_submission/efficiency_submission.py
@@ -53,6 +60,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/csc108/style_submission/style_submission.py
@@ -60,6 +68,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/gac_example/correct_submission/correct_submission.py
@@ -67,6 +76,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/gac_example/fail_submission/fail_submission.py
@@ -74,6 +84,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/gac_example/inefficient_submission/inefficient_submission.py
@@ -81,6 +92,7 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python
 
 - vars:
     submission_file: test_submissions/gac_example/partial_correct_submission/partial_correct_submission.py
@@ -88,3 +100,4 @@
     prompt: code_table
     model: deepSeek-v3
     scope: code
+    submission_type: python

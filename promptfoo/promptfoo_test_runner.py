@@ -40,7 +40,7 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 options['prompt'],
                 "--llama_mode",
                 "server",
-                '--submissions_type',
+                '--submission_type',
                 submission_type,
             ],
             capture_output=True,
