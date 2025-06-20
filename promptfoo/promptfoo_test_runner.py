@@ -44,7 +44,7 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 "server",
                 '--submission_type',
                 submission_type,
-                "--output",
+                "--output_template",
                 "../ai_feedback/data/output/response_and_prompt.md",
             ],
             capture_output=True,
