@@ -1,5 +1,7 @@
 import os
+import re
 import subprocess
+from typing import Tuple
 
 
 def call_api(prompt: str, context: dict, metadata: dict) -> dict:
@@ -42,6 +44,8 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 "server",
                 '--submission_type',
                 submission_type,
+                "--output",
+                "../ai_feedback/data/output/response_and_prompt.md",
             ],
             capture_output=True,
             env=env,
@@ -51,9 +55,30 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
         if result.returncode != 0:
             raise RuntimeError(f"ai_feedback failed (rc={result.returncode}):\n{result.stderr}")
         else:
-            output = result.stdout.strip()
-
+            prompt, output = split_prompt_response(result.stdout.strip())
     except Exception as e:
         raise RuntimeError(f"[EXCEPTION] {e}")
 
-    return {"output": output}
+    return {"output": output, "prompt": prompt}
+
+
+def split_prompt_response(md_text: str) -> Tuple[str, str]:
+    """
+    Split a Markdown string into its prompt and response parts.
+
+    Args:
+        md_text: The full Markdown text.
+
+    Returns:
+        A tuple (prompt, response), both stripped of leading/trailing whitespace.
+
+    Raises:
+        ValueError: If the expected headings are not found.
+    """
+    pattern = r'^# Prompt\s*(.*?)^# Response\s*(.*)$'
+    match = re.search(pattern, md_text, re.DOTALL | re.MULTILINE)
+    if not match:
+        raise ValueError("Markdown not in expected format with '# Prompt' and '# Response' headers")
+    prompt = match.group(1).strip()
+    response = match.group(2).strip()
+    return prompt, response

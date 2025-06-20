@@ -8,6 +8,9 @@ tests:
 
 columns:
   - name: prompt
+    path: prompt
+
+  - name: prompt_template
     path: vars.prompt
 
   - name: model

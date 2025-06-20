@@ -1,0 +1,6 @@
+# Prompt
+
+{prompt}
+
+# Response
+{response}
