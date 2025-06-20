@@ -4,6 +4,7 @@
     prompt: text_pdf_analyze
     model: deepSeek-R1:70B
     scope: text
+    submission_type: pdf
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/excellent_submission/excellent_submission.txt
@@ -11,6 +12,8 @@
     prompt: text_pdf_analyze
     model: deepSeek-R1:70B
     scope: text
+    submission_type: pdf
+
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/off_topic_submission/off_topic_submission.txt
@@ -18,6 +21,8 @@
     prompt: text_pdf_analyze
     model: deepSeek-R1:70B
     scope: text
+    submission_type: pdf
+
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/weak_submission/weak_submission.txt
@@ -25,3 +30,4 @@
     prompt: text_pdf_analyze
     model: deepSeek-R1:70B
     scope: text
+    submission_type: pdf

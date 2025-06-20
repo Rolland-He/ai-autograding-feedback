@@ -18,6 +18,10 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
 
     try:
         env = os.environ.copy()
+        if options['submission_type']:
+            submission_type = options['submission_type']
+        else:
+            submission_type = None
 
         result = subprocess.run(
             [
@@ -36,6 +40,8 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
                 options['prompt'],
                 "--llama_mode",
                 "server",
+                '--submissions_type',
+                submission_type,
             ],
             capture_output=True,
             env=env,
