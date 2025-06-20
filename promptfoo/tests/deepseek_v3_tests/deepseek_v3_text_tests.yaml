@@ -1,27 +1,27 @@
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/average_submission/average_submission.txt
     solution_file: test_submissions/data_collection_ethics_module/solution.txt
-    prompt: code_table
+    prompt: TEXT_PDF_ANALYZE
     model: deepSeek-v3
-    scope: code
+    scope: text
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/excellent_submission/excellent_submission.txt
     solution_file: test_submissions/data_collection_ethics_module/solution.txt
-    prompt: code_table
+    prompt: TEXT_PDF_ANALYZE
     model: deepSeek-v3
-    scope: code
+    scope: text
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/off_topic_submission/off_topic_submission.txt
     solution_file: test_submissions/data_collection_ethics_module/solution.txt
-    prompt: code_table
+    prompt: TEXT_PDF_ANALYZE
     model: deepSeek-v3
-    scope: code
+    scope: text
 
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/weak_submission/weak_submission.txt
     solution_file: test_submissions/data_collection_ethics_module/solution.txt
-    prompt: code_table
+    prompt: TEXT_PDF_ANALYZE
     model: deepSeek-v3
-    scope: code
+    scope: text
