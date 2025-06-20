@@ -2,8 +2,9 @@ Core Requirements a Good Response Should Address
 A high-quality answer should address ethical concerns, potential justifications, and the implications of using public data without consent. Here's a breakdown of what to look for:
 
 1. Clear Position (Thesis Statement)
-Student should explicitly answer the question:
+Student should explicitly answer the question: Is it ethically acceptable to collect and use publicly available data from social media to train machine learning models without user consent?
 
+examples:
 Yes, it is ethically acceptable under certain conditions
 
 No, it is not ethical without user consent
@@ -11,15 +12,7 @@ No, it is not ethical without user consent
 It depends on the context, but caution is necessary
 
 2. Ethical Justification
-Reference to ethical frameworks such as but not limited to:
-
-Utilitarianism: Does it maximize benefit for society?
-
-Deontology: Is there a duty to respect privacy?
-
-Informed consent: A core principle in data ethics
-
-Fairness and harm: Could marginalized groups be disproportionately affected?
+does the submission contain some justification for their position that makes logical sense
 
 3. Public vs. Private Data Distinction
 Address whether being “publicly available” removes ethical responsibility:
@@ -29,13 +22,7 @@ Is accessibility the same as consent?
 Does platform policy equate to moral permission?
 
 4. Consideration of Risks/Harms
-Identify concerns like:
-
-Privacy invasion
-
-Identity inference or profiling
-
-Data used in ways users never expected
+Identify concerns realistic risks or harms of their position and offers mitigation stratgies
 
 5. Acknowledgment of Opposing Viewpoints
 Include reasonable opposing arguments:
