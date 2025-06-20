@@ -22,10 +22,33 @@
     scope: text
     submission_type: pdf
 
-
 - vars:
     submission_file: test_submissions/data_collection_ethics_module/weak_submission/weak_submission.txt
     solution_file: test_submissions/data_collection_ethics_module/solution.txt
+    prompt: text_pdf_analyze
+    model: deepSeek-v3
+    scope: text
+    submission_type: pdf
+
+- vars:
+    submission_file: test_submissions/csc373_eft_optimality_proof/fail_submission/fail_submission.pdf
+    solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
+    prompt: text_pdf_analyze
+    model: deepSeek-v3
+    scope: text
+    submission_type: pdf
+
+- vars:
+    submission_file: test_submissions/csc373_eft_optimality_proof/incomplete_submission/incomplete_submission.pdf
+    solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
+    prompt: text_pdf_analyze
+    model: deepSeek-v3
+    scope: text
+    submission_type: pdf
+
+- vars:
+    submission_file: test_submissions/csc373_eft_optimality_proof/induction_submission/induction_submission.pdf
+    solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
     prompt: text_pdf_analyze
     model: deepSeek-v3
     scope: text
