@@ -60,3 +60,31 @@
     prompt: code_table
     model: deepSeek-R1:70B
     scope: code
+
+- vars:
+    submission_file: test_submissions/gac_example/correct_submission/correct_submission.py
+    solution_file: test_submissions/gac_example/solution.py
+    prompt: code_table
+    model: deepSeek-R1:70B
+    scope: code
+
+- vars:
+    submission_file: test_submissions/gac_example/fail_submission/fail_submission.py
+    solution_file: test_submissions/gac_example/solution.py
+    prompt: code_table
+    model: deepSeek-R1:70B
+    scope: code
+
+- vars:
+    submission_file: test_submissions/gac_example/inefficient_submission/inefficient_submission.py
+    solution_file: test_submissions/gac_example/solution.py
+    prompt: code_table
+    model: deepSeek-R1:70B
+    scope: code
+
+- vars:
+    submission_file: test_submissions/gac_example/partial_correct_submission/partial_correct_submission.py
+    solution_file: test_submissions/gac_example/solution.py
+    prompt: code_table
+    model: deepSeek-R1:70B
+    scope: code
