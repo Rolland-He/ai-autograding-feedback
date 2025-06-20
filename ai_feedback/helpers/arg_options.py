@@ -105,6 +105,7 @@ class OutputTemplate(Enum):
 
     RESPONSE_ONLY = 'response_only'
     VERBOSE = 'verbose'
+    RESPONSE_AND_PROMPT = 'response_and_prompt'
 
     def __str__(self):
         return self.value
