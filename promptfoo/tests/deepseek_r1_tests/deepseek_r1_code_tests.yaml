@@ -2,12 +2,10 @@
 
 providers:
   - id: 'file://../../promptfoo_test_runner.py'
-
-defaults:
-  vars:
-    model:           codellama:latest
-    scope:           code
-    submission_type: python
+    options:
+      model: codellama:latest
+      scope: code
+      submission_type: python
 
 scenarios:
   - config:
