@@ -5,7 +5,7 @@ providers:
 
 defaultTest:
   vars:
-    model: codellama:latest
+    model: deepSeek-R1:70B
     scope: code
     submission_type: python
 
