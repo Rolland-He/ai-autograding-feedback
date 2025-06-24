@@ -34,7 +34,7 @@ class Prompt(Enum):
     CODE_HINT = "code_hint"
     CODE_EXPLANATION = "code_explanation"
     CODE_ANNOTATION = "code_annotation"
-    CUSTOM_CODE_FEEDBACK_V3 = "custom_code_feedback_v3"
+    CODE_FEEDBACK_V3 = "code_feedback_v3"
     TEXT_PDF_ANALYZE = "text_pdf_analyze"
 
     def __str__(self):

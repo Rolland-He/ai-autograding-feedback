@@ -9,7 +9,7 @@ defaultTest:
 
 scenarios:
   - config:
-      - vars: { prompt: custom_code_feedback_v3 }
+      - vars: { prompt: code_feedback_v3 }
 #      - vars: { prompt: code_explanation }
 #      - vars: { prompt: code_hint }
 #      - vars: { prompt: code_lines }
