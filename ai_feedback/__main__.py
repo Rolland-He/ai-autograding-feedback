@@ -200,6 +200,7 @@ def main() -> int:
         request, response = code_processing.process_code(args, prompt_content, system_instructions)
 
     markdown_template = load_markdown_template(args.output_template)
+    print(f"OUTPUT TEMPLATE: {args.output_template}")
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_text = markdown_template.format(
         question=args.question or "N/A",

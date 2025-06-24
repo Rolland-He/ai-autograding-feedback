@@ -61,12 +61,12 @@ def main():
     time.sleep(40)
 
     try:
-        run_promptfoo_tests("tests/deepseek-v3_tests.yaml", "deepseek-v3_results.json")
+        run_promptfoo_tests("tests/deepseek_v3_tests/deepseek_v3_code_tests.yaml", "deepseek-v3_results.json")
     finally:
         stop_process(llama_proc)
         time.sleep(5)
 
-    run_promptfoo_tests("tests/deepseek_r1_tests.yaml", "deepseek_r1_results.json")
+    run_promptfoo_tests("tests/deepseek_r1_tests/deepseek_r1_code_tests.yaml", "deepseek_r1_results.json")
 
 
 if __name__ == "__main__":

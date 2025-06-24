@@ -1,13 +1,16 @@
 providers:
   - id: 'file://promptfoo_test_runner.py'
 
-#tests:
-#  - file://promptfoo/tests/promptfoo_tests/deepseek-v3_tests.yaml
-#  - file://promptfoo/tests/promptfoo_tests/deepseek_r1_tests.yaml
+tests:
+  - file:///tests/deepseek_r1_tests/deepseek_v3_code_tests.yaml
+  - file:///tests/deepseek_v3_tests/deepseek_r1_code_tests.yaml
 
 
 columns:
   - name: prompt
+    path: prompt
+
+  - name: prompt_template
     path: vars.prompt
 
   - name: model
