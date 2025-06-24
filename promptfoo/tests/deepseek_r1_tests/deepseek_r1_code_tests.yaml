@@ -1,5 +1,3 @@
-# deepseek_r1_code_tests.yaml
-
 providers:
   - id: 'file://../../promptfoo_test_runner.py'
 

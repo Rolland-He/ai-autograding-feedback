@@ -3,7 +3,7 @@ providers:
 
 defaultTest:
   vars:
-    model: deepSeek-R1:70B
+    model: remote
     scope: text
     submission_type: pdf
 

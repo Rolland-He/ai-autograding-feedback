@@ -3,7 +3,7 @@ providers:
 
 defaultTest:
   vars:
-    model: deepSeek-v3
+    model: remote
     scope: code
     submission_type: python
 
