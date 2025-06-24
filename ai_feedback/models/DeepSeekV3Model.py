@@ -101,7 +101,7 @@ class DeepSeekV3Model(Model):
         }
 
         try:
-            response = requests.post(url, json=payload, timeout=500)
+            response = requests.post(url, json=payload, timeout=1000)
             response.raise_for_status()
         except requests.RequestException as e:
             raise RuntimeError(f"ERROR: Request to llama-server failed: {str(e)}")
