@@ -10,11 +10,6 @@ defaultTest:
 scenarios:
   - config:
       - vars: { prompt: text_analyze_v3 }
-      - vars: { prompt: text_chain_critic }
-      - vars: { prompt: text_few_shot }
-      - vars: { prompt: text_planner }
-      - vars: { prompt: text_think_pad }
-      - vars: { prompt: text_zero_shot }
     tests:
       - vars:
           submission_file: test_submissions/data_collection_ethics_module/average_submission/average_submission.txt

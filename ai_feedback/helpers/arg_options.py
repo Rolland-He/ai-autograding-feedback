@@ -40,11 +40,6 @@ class Prompt(Enum):
     CODE_OVERALL = "code_overall"
     TEXT_PDF_ANALYZE = "text_pdf_analyze"
     TEXT_ANALYZE_V3 = "text_analyze_v3"
-    TEXT_CHAIN_CRITIC = "text_chain_critic"
-    TEXT_FEW_SHOT = "text_few_shot"
-    TEXT_PLANNER = "text_planner"
-    TEXT_THINK_PAD = "text_think_pad"
-    TEXT_ZERO_SHOT = "text_zero_shot"
 
     def __str__(self):
         return self.value
