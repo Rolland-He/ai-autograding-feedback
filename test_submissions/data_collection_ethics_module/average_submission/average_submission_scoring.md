@@ -2,15 +2,14 @@
 
 ### Submission Summary
 
-This student gives a reasonable argument but lacks structure and deep ethical reasoning:
+This student offers a moderately reasoned view that public data can be used for machine-learning when transparency and basic safeguards are in place, but the answer is still thin on rigorous ethical analysis and organisation.
 
-> If the data is already public, I think it’s probably okay to use it. People put stuff online knowing it’s out there. But companies should maybe still tell users they’re using it. It would be better if there was more transparency. I think it’s not a huge issue unless it harms someone. But I also see how it could go wrong. Like, some people wouldn’t want their photos in AI datasets. It depends on what the model is being used for.
+> Collecting data that users have already shared publicly on social media can be acceptable as long as the company is open about what it is doing and gives people a way to opt out. Public posts do lower the expectation of privacy, yet users don’t always realise their pictures or comments might train an AI. Firms should announce the purpose of the scrape, hide personal names, and delete sensitive details. If a model could harm specific groups—say by revealing identities—extra caution is needed. At the same time, big public datasets help algorithms avoid bias and make products that benefit everyone, so completely banning scraping would slow progress. Overall, using public data without individual permission can be ethical when it is clearly disclosed, limited to non-sensitive content, and paired with strong security measures.
 
-### Expected AI Response
+### Expected AI Feedback Response Should
 
-- Acknowledge basic awareness of the issue.
-- Recommend referencing ethical principles or clearer justification.
-- Suggest better organization and more specific examples.
-- Encourage critical evaluation of consequences.
-
----
+* Point out that the student gives only a tentative thesis and does not clearly state whether consent is *always* required or only *sometimes*.
+* Note the lack of a structured argument (introduction, body, conclusion) and recommend clearer organisation.
+* Highlight that the answer mentions transparency and opt-out but supplies no detailed ethical framework (e.g., autonomy, beneficence) or citations to established principles.
+* Observe that specific risks are touched on but not explored in depth; suggest adding concrete examples of possible harms and corresponding mitigations.
+* Mention the absence of an opposing viewpoint and encourage the student to acknowledge and address counter-arguments to strengthen critical analysis.
