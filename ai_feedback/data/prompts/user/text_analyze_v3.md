@@ -28,8 +28,8 @@ Your task is to evaluate whether the Student Response satisfies each criterion y
 
 ─────────────────────────────────
 
-**Instructor Solution (for your eyes only):**
-{instructor_solution}
+- **Files & References (for your analysis only):**
+{file_references}
 
-**Student Response:**
-{student_response}
+ **Student Submission to Review:**
+{file_contents}
