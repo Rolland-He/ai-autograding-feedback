@@ -17,4 +17,12 @@ Advice: 1 sentence.
 Next Steps: 2-3 bullet-like sentences (still plain text).
 --------------------------------------------------
 
-Same guard-rails: infer criteria from Instructor Solution; quote student text only, wrap in quotes; no tables, no JSON, no Markdown.
+Guidelines:
+**All output must be plain text**
+- (no tables), quote only student text, and never expose Instructor wording.
+
+**Infer criteria only from the Instructor Solution.**
+- Treat every distinct claim, requirement, or step in the Instructor Solution as a separate criterion.
+
+ **Never reveal or paraphrase the Instructor Solution.**
+-  Refer to each criterion in *neutral* terms (e.g., “Defines key concept” rather than quoting the solution).
