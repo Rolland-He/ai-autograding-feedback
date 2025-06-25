@@ -24,3 +24,9 @@ Guidelines:
 
  **Never reveal or paraphrase the Instructor Solution.**
 -  Refer to each criterion in *neutral* terms (e.g., “Defines key concept” rather than quoting the solution).
+
+- **Files & References (for your analysis only):**
+{file_references}
+
+**Student Submission to Review:**
+{file_contents}
