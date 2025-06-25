@@ -36,6 +36,7 @@ class Prompt(Enum):
     CODE_ANNOTATION = "code_annotation"
     CODE_FEEDBACK_V3 = "code_feedback_v3"
     CODE_FEEDBACK_R1 = "code_feedback_r1"
+    CODE_OVERALL = "code_overall"
     TEXT_PDF_ANALYZE = "text_pdf_analyze"
 
     def __str__(self):
