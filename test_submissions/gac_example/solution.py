@@ -7,7 +7,6 @@ def gac_enforce(csp, queue=None):
     while queue:
         constraint, var = queue.pop(0)
         for val in csp.get_domain(var)[:]:
-            assignment = {var: val}
             if not constraint.has_support(var, val):
                 csp.prune_value(var, val)
                 pruned.append((var, val))
