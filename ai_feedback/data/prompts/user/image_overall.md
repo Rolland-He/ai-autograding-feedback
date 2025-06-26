@@ -1,4 +1,4 @@
-You are a reviewer for an academic journal.  Your task is to evaluate the figures supplied by an author and suggest improvements.
+You are a reviewer for data visualization course assignment.  Your task is to evaluate the figures supplied by an author and suggest improvements.
 
 CONTEXT  
 - Submission image(s): {submission_image}
