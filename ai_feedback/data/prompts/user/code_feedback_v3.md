@@ -31,7 +31,7 @@ Your mission:
 ###############  END SCRATCH-PAD  #########################
 
 ###########  USER-VISIBLE OUTPUT FORMAT (MARKDOWN) ########
-| Requirement | Student Attempt | Potential Issue |
+| Requirement | Student Attempt | Comment |
 |-------------|-----------------|-----------------|
 | …           | …               | …               |
 | …           | …               | …               |
@@ -41,8 +41,8 @@ Your mission:
 
 Example output for Perfect Submission
 
-| Requirement | Student Attempt | Potential Issue |
-|-------------|-----------------|-----------------------------|
+| Requirement | Student Attempt | Comment |
+|-------------|-----------------|---------------------|
 | Detects graph connectivity in **O(m + n)** | `14-28: BFS using deque` | ✅ Meets requirement |
 | Returns **True for empty graph** | `6-8: if not graph: return True` | ✅ Meets requirement |
 | Uses **deque** for queue | `15: queue = deque([start])` | ✅ Meets requirement |
@@ -51,13 +51,13 @@ Example output for Perfect Submission
 
 Example Output for Bad submission
 
-| Requirement | Student Attempt  | Potential Issue |
-|-------------|-----------------------------|------------------------------|
-| **Handle empty graph safely** | `6: start = next(iter(graph))` | ❌ Calling `next(iter(graph))` raises **StopIteration** when the dict is empty, causing an immediate crash before any connectivity logic runs. This single oversight prevents all later code paths from executing, so none of the subsequent correctness checks even matter until this is fixed. |
+| Requirement | Student Attempt  | Comment |                                                                                                                                                                                                                                                                                                                                       |
+|-------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Handle empty graph safely** | `6: start = next(iter(graph))` | Calling `next(iter(graph))` raises **StopIteration** when the dict is empty, causing an immediate crash before any connectivity logic runs. This single oversight prevents all later code paths from executing, so none of the subsequent correctness checks even matter until this is fixed.                                                  |
 | **Use visited set to avoid re-visits** | `17: for n in graph[node]: queue.append(n)` | The loop enqueues neighbors without checking whether they have already been visited. On graphs with cycles or back-edges this can lead to an **infinite loop**, exponential queue growth, and inflated reachability counts. The absence of a `visited` guard is therefore the root cause of both performance and correctness drift downstream. |
-| **Employ efficient queue** | `13: queue = [start]`<br>`22: node = queue.pop(0)` | Using a plain list and `pop(0)` forces Python to shift every remaining element on each dequeue—**O(n) per pop**. On dense graphs that means overall complexity can degrade from O(m + n) to roughly O(n²), making the algorithm impractical for large inputs even if the logic were otherwise correct. |
-| **Accurately count reachable nodes** | `20: reachable += 1` (inside loop with duplicates) | Because nodes are re-added to the queue, `reachable` may be incremented multiple times for the same vertex, so its final value can exceed `len(graph)`. This over-count masks disconnected graphs as “connected” and is directly caused by the missing `visited` tracking noted above. |
-| **Return correct connectivity verdict** | `33: return reachable == len(graph)` | The function’s final check relies on the potentially over-inflated `reachable` variable; thus, it can incorrectly return **True** for graphs with isolated components. This error is a downstream consequence of both the duplicate-visit issue and the inefficient queue management. |
+| **Employ efficient queue** | `13: queue = [start]`<br>`22: node = queue.pop(0)` | Using a plain list and `pop(0)` forces Python to shift every remaining element on each dequeue—**O(n) per pop**. On dense graphs that means overall complexity can degrade from O(m + n) to roughly O(n²), making the algorithm impractical for large inputs even if the logic were otherwise correct.                                         |
+| **Accurately count reachable nodes** | `20: reachable += 1` (inside loop with duplicates) | Because nodes are re-added to the queue, `reachable` may be incremented multiple times for the same vertex, so its final value can exceed `len(graph)`. This over-count masks disconnected graphs as “connected” and is directly caused by the missing `visited` tracking noted above.                                                         |
+| **Return correct connectivity verdict** | `33: return reachable == len(graph)` | The function’s final check relies on the potentially over-inflated `reachable` variable; thus, it can incorrectly return **True** for graphs with isolated components. This error is a downstream consequence of both the duplicate-visit issue and the inefficient queue management.                                                          |
 
 {file_references}
 
