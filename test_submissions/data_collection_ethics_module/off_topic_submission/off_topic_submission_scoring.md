@@ -12,5 +12,6 @@ This response is vague, off-topic, or lacks any critical reasoning:
 - Note absence of argument, position, or ethical framework.
 - Recommend re-reading the prompt and focusing on data use/consent.
 - Encourage more focused engagement with ethical dimensions.
+- Fails every criterion in the rubric
 
 ---

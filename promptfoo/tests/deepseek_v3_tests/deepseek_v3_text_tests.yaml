@@ -30,11 +30,14 @@ scenarios:
       - vars:
           submission_file: test_submissions/csc373_eft_optimality_proof/fail_submission/fail_submission.pdf
           solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
+          prompt: text_eft_proof
 
       - vars:
           submission_file: test_submissions/csc373_eft_optimality_proof/incomplete_submission/incomplete_submission.pdf
           solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
+          prompt: text_eft_proof
 
       - vars:
           submission_file: test_submissions/csc373_eft_optimality_proof/induction_submission/induction_submission.pdf
           solution_file: test_submissions/csc373_eft_optimality_proof/solution.pdf
+          prompt: text_eft_proof
