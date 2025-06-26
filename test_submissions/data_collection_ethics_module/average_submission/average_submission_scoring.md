@@ -9,7 +9,6 @@ This student offers a moderately reasoned view that public data can be used for 
 ### Expected AI Feedback Response Should
 
 * Point out that student gives a good thesis
-* Note the lack of a structured argument (introduction, body, conclusion) and recommend clearer organisation.
-* Highlight that the answer mentions transparency and opt-out but supplies no detailed ethical framework (e.g., autonomy, beneficence) or citations to established principles.
-* Observe that specific risks are touched on but not explored in depth; suggest adding concrete examples of possible harms and corresponding mitigations.
-* Mention the absence of an opposing viewpoint and encourage the student to acknowledge and address counter-arguments to strengthen critical analysis.
+* Highlight that the answer justifies thesis by stating importance of privacy concerns when it comes to scraping data
+* Mention that while acknowledges risks does not justify why their points still stands
+* Encourage the student to acknowledge and address counter-arguments to strengthen critical analysis.
