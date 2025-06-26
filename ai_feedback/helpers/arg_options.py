@@ -41,7 +41,7 @@ class Prompt(Enum):
     TEXT_PDF_ANALYZE = "text_pdf_analyze"
     TEXT_ANALYZE_V3 = "text_analyze_v3"
     TEXT_ANALYZE_R1 = "text_analyze_r1"
-    TEXT_ETF_PROOF = "text_etf_proof"
+    TEXT_EFT_PROOF = "text_eft_proof"
 
     def __str__(self):
         return self.value
