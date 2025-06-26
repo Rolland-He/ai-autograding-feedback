@@ -10,7 +10,6 @@ defaultTest:
 scenarios:
   - config:
       - vars: { prompt: code_feedback_v3 }
-      - vars: { prompt: code_table }
 #      - vars: { prompt: code_explanation }
 #      - vars: { prompt: code_hint }
 #      - vars: { prompt: code_lines }
