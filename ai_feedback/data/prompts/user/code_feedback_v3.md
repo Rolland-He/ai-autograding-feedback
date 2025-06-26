@@ -7,11 +7,10 @@ FEEDBACK RULES  (strictly enforce)
 1. **Locate each material defect** — syntax, style, logic, or performance.
 2. Summarize feedback in a table with **exactly these columns**:
 
-   | Lines | Problem | Impact |
+   | Lines | Problem
 
    • *Lines* – compress ranges, e.g. “12–18”.
-   • *Problem* – concise what/why (no fix).
-   • *Impact* – wrong output, crash, inefficiency, etc.
+   • *Problem* –  what/why is this a problem (no fix).
 
 
 3. **One-line encouragement** at top if issues exist.
