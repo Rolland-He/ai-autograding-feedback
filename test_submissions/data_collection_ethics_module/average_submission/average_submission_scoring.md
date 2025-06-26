@@ -8,7 +8,7 @@ This student offers a moderately reasoned view that public data can be used for 
 
 ### Expected AI Feedback Response Should
 
-* Point out that the student gives only a tentative thesis and does not clearly state whether consent is *always* required or only *sometimes*.
+* Point out that student gives a good thesis
 * Note the lack of a structured argument (introduction, body, conclusion) and recommend clearer organisation.
 * Highlight that the answer mentions transparency and opt-out but supplies no detailed ethical framework (e.g., autonomy, beneficence) or citations to established principles.
 * Observe that specific risks are touched on but not explored in depth; suggest adding concrete examples of possible harms and corresponding mitigations.
