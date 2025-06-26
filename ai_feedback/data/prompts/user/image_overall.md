@@ -25,9 +25,8 @@ Otherwise follow these steps:
 
 4. Self-critique: after completing the table, identify at least two omissions or weak explanations, revise the related rows, and mark them (revised).
 
-Return exactly one plain-text table with 7 rows and 5 columns.  
-Do NOT use *, **, italics, colons, or additional paragraphs.  
-Do NOT place any text before or after the table.  
+Return exactly one plain-text table.  
+Do not use *, **, -, :, or extra header separators anywhere in the table.  
 Every cell must contain text; use “N/A” if truly not applicable.  
 The Reflection row must list two revised items, numbered (1) and (2).
 
