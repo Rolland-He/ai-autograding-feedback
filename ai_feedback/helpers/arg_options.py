@@ -28,6 +28,7 @@ class Prompt(Enum):
     IMAGE_ANALYZE_ANNOTATION = "image_analyze_annotations"
     IMAGE_STYLE = "image_style"
     IMAGE_STYLE_ANNOTATIONS = "image_style_annotations"
+    IMAGE_OVERALL = "image_overall"
     CODE_LINES = "code_lines"
     CODE_TEMPLATE = "code_template"
     CODE_TABLE = "code_table"

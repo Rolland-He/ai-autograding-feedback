@@ -20,33 +20,60 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
 
     try:
         env = os.environ.copy()
-        if options['submission_type']:
+        if options.get('submission_type'):
             submission_type = options['submission_type']
         else:
             submission_type = None
 
-        result = subprocess.run(
-            [
-                "python3",
-                "-m",
-                "ai_feedback",
-                "--scope",
-                options["scope"],
+        cmd_args = [
+            "python3",
+            "-m",
+            "ai_feedback",
+            "--scope",
+            options["scope"],
+            "--model",
+            options["model"],
+            "--prompt",
+            options['prompt'],
+            "--llama_mode",
+            "server",
+            '--submission_type',
+            submission_type,
+            "--output_template",
+            "response_and_prompt",
+        ]
+
+        if options.get('solution_file'):
+            cmd_args.extend(["--solution", f"../{options['solution_file']}"])
+
+        if options["scope"] == "image":
+            if options['submission_file'].endswith('.png'):
+                cmd_args.extend([
+                    "--submission", f"../{options['submission_file']}",
+                    "--submission_image", f"../{options['submission_file']}"
+                ])
+            else:
+                cmd_args.extend([
+                    "--submission", 
+                    f"../{options['submission_file']}"
+                ])
+                
+                submission_path = options['submission_file']
+                submission_basename = os.path.splitext(os.path.basename(submission_path))[0]
+                submission_dir = os.path.dirname(submission_path)
+                
+                expected_image = f"../{submission_dir}/{submission_basename}.png"
+                
+                cmd_args.extend(["--submission_image", expected_image])
+        else:
+            # For code
+            cmd_args.extend([
                 "--submission",
-                f"../{options['submission_file']}",
-                "--solution",
-                f"../{options['solution_file']}",
-                "--model",
-                options["model"],
-                "--prompt",
-                options['prompt'],
-                "--llama_mode",
-                "server",
-                '--submission_type',
-                submission_type,
-                "--output_template",
-                "response_and_prompt",
-            ],
+                f"../{options['submission_file']}"
+            ])
+
+        result = subprocess.run(
+            cmd_args,
             capture_output=True,
             env=env,
             text=True,
