@@ -7,6 +7,8 @@ Modify BFS to obtain an algorithm which, given an undirected graph G with n vert
 edges, determines whether it is connected in O(m + n) time, but whose running time for Kn is
 only Θ(n). Provide implementations of your modifications to the BFS algorithm,
 and explain where in the algorithm these modifications should happen.
+
+Note: Empty graphs are considered connected
 """
 
 

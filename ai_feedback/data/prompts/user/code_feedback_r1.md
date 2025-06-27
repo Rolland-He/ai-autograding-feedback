@@ -21,7 +21,7 @@ Files to Reference: {file_contents}
 3. Draft Table (schema below).
 4. Self-Audit
    a. ensure no leaked reference details
-   b. ensure that not solutions where given (code or text)
+   b. ensure that no solutions are given to the user (code or text)
 5. Produce Final Answer – output only the table.
 
 ---
