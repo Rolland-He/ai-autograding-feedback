@@ -125,6 +125,8 @@ class SystemPrompt(Enum):
 
     TEST_FEEDBACK = "student_test_feedback"
     IMAGE_STYLE_GRADER = "image_style_grader"
+    CODE_FEEDBACK_V3 = "code_feedback_v3"
+    TEXT_FEEDBACK_V3 = "text_feedback_v3"
 
     def __str__(self):
         return self.value
