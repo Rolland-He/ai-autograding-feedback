@@ -49,31 +49,32 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
         if options.get('solution_file'):
             cmd_args.extend(["--solution", f"../{options['solution_file']}"])
 
+        if options.get('system_prompt'):
+            cmd_args.extend(["--system_prompt", f"{options['system_prompt']}"])
+
         if options["scope"] == "image":
             if options['submission_file'].endswith('.png'):
-                cmd_args.extend([
-                    "--submission", f"../{options['submission_file']}",
-                    "--submission_image", f"../{options['submission_file']}"
-                ])
+                cmd_args.extend(
+                    [
+                        "--submission",
+                        f"../{options['submission_file']}",
+                        "--submission_image",
+                        f"../{options['submission_file']}",
+                    ]
+                )
             else:
-                cmd_args.extend([
-                    "--submission", 
-                    f"../{options['submission_file']}"
-                ])
-                
+                cmd_args.extend(["--submission", f"../{options['submission_file']}"])
+
                 submission_path = options['submission_file']
                 submission_basename = os.path.splitext(os.path.basename(submission_path))[0]
                 submission_dir = os.path.dirname(submission_path)
-                
+
                 expected_image = f"../{submission_dir}/{submission_basename}.png"
-                
+
                 cmd_args.extend(["--submission_image", expected_image])
         else:
             # For code
-            cmd_args.extend([
-                "--submission",
-                f"../{options['submission_file']}"
-            ])
+            cmd_args.extend(["--submission", f"../{options['submission_file']}"])
 
         result = subprocess.run(
             cmd_args,

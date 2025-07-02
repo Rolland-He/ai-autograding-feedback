@@ -9,11 +9,8 @@ defaultTest:
 
 scenarios:
   - config:
-      - vars: { prompt: code_feedback_v3 }
-#      - vars: { prompt: code_explanation }
-#      - vars: { prompt: code_hint }
-#      - vars: { prompt: code_lines }
-#      - vars: { prompt: code_template }
+      - vars: { prompt: code_feedback_v3, system_prompt: code_feedback_v3}
+
     tests:
       - vars:
           submission_file: test_submissions/csc263_opt_connected/correct_submission/correct_submission.py
