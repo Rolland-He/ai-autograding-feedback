@@ -18,7 +18,7 @@
 
 5. If the Student Response meets **all** criteria, output a single-row table:
 
-   | ✅ Excellent – the response meets every inferred criterion | | |
+    ✅ Excellent – the response meets every inferred criterion
 
 ─────────────────────────────────
 

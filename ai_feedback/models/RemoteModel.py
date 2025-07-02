@@ -61,12 +61,10 @@ class RemoteModel(Model):
         load_dotenv()
 
         headers = {"X-API-KEY": os.getenv("REMOTE_API_KEY")}
-        data = {
-            "content": prompt,
-            "model": self.model_name,
-            "system_instructions": system_instructions,
-            "llama_mode": llama_mode,
-        }
+        data = {"content": prompt, "model": self.model_name, "system_instructions": system_instructions}
+        if llama_mode:
+            data["llama_mode"] = llama_mode
+
         files = {}
         if submission_image:
             filename = os.path.basename(submission_image)
