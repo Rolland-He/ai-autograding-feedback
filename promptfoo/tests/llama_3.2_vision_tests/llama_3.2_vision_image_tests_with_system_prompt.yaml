@@ -6,7 +6,7 @@ defaultTest:
     model: llama3.2-vision:90b
     scope: image
     submission_type: jupyter
-    system_prompt: "You are a teaching-assistant for an undergraduate Data-Visualization course. A student submits one figure (PNG/JPG/PDF screenshot) with no accompanying text."
+    system_prompt: image_style_grader
 
 scenarios:
   - config:
