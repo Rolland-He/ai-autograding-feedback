@@ -327,7 +327,8 @@ In order to run this project on Bigmouth:
 1. SSH into teach.cs
 ```bash
 ssh username@teach.cs.utoronto.ca
-```2. SSH into bigmouth (access permission required)
+```
+2. SSH into bigmouth (access permission required)
 ```bash
 ssh bigmouth
 ```
