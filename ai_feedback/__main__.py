@@ -74,8 +74,9 @@ def load_markdown_prompt(prompt_name: str) -> dict:
         sys.exit(1)
 
 
-def _load_content_with_fallback(content_arg: str, predefined_values: list[str], 
-                               predefined_subdir: str, content_type: str) -> str:
+def _load_content_with_fallback(
+    content_arg: str, predefined_values: list[str], predefined_subdir: str, content_type: str
+) -> str:
     """Generic function to load content by trying pre-defined names first, then treating as file path.
 
     Args:
@@ -97,7 +98,9 @@ def _load_content_with_fallback(content_arg: str, predefined_values: list[str],
             with open(file_path, "r", encoding='utf-8') as file:
                 return file.read()
         except FileNotFoundError:
-            print(f"Error: Pre-defined {content_type} file '{content_arg}.md' not found in {predefined_subdir} subfolder.")
+            print(
+                f"Error: Pre-defined {content_type} file '{content_arg}.md' not found in {predefined_subdir} subfolder."
+            )
             sys.exit(1)
     else:
         # Treat as a file path
@@ -124,12 +127,7 @@ def load_prompt_content(prompt_arg: str) -> str:
     Raises:
         SystemExit: If the prompt cannot be loaded
     """
-    return _load_content_with_fallback(
-        prompt_arg,
-        arg_options.get_enum_values(arg_options.Prompt),
-        "user",
-        "prompt"
-    )
+    return _load_content_with_fallback(prompt_arg, arg_options.get_enum_values(arg_options.Prompt), "user", "prompt")
 
 
 def load_system_prompt_content(system_prompt_arg: str) -> str:
@@ -145,10 +143,7 @@ def load_system_prompt_content(system_prompt_arg: str) -> str:
         SystemExit: If the system prompt cannot be loaded
     """
     return _load_content_with_fallback(
-        system_prompt_arg,
-        arg_options.get_enum_values(arg_options.SystemPrompt),
-        "system",
-        "system prompt"
+        system_prompt_arg, arg_options.get_enum_values(arg_options.SystemPrompt), "system", "system prompt"
     )
 
 
