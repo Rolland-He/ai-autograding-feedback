@@ -102,7 +102,7 @@ def main() -> int:
         help=HELP_MESSAGES["prompt"],
     )
     parser.add_argument("--prompt_text", type=str, required=False, help=HELP_MESSAGES["prompt_text"])
-    parser.add_argument("--prompt_custom", action="store_true", required=False)
+    parser.add_argument("--prompt_custom", type=str, required=False, help=HELP_MESSAGES["prompt_custom"])
     parser.add_argument(
         "--scope",
         type=str,
@@ -119,6 +119,12 @@ def main() -> int:
         choices=arg_options.get_enum_values(arg_options.Models),
         required=True,
         help=HELP_MESSAGES["model"],
+    )
+    parser.add_argument(
+        "--remote_model",
+        type=str,
+        required=False,
+        help=HELP_MESSAGES["remote_model"],
     )
     parser.add_argument(
         "--output",
@@ -165,13 +171,12 @@ def main() -> int:
     system_prompt_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), f"data/prompts/system/{args.system_prompt}.md"
     )
-    with open(system_prompt_path, "r") as file:
+    with open(system_prompt_path, encoding='utf-8') as file:
         system_instructions = file.read()
 
     if args.prompt_custom:
-        prompt_filename = os.path.join("./", f"{args.prompt_text}.txt")
-        print(prompt_filename)
-        with open(prompt_filename, "r") as prompt_file:
+        prompt_filename = os.path.join("./", args.prompt_custom)
+        with open(prompt_filename, encoding='utf-8') as prompt_file:
             prompt_content += prompt_file.read()
     else:
         if args.prompt:
@@ -193,7 +198,7 @@ def main() -> int:
 
     if args.scope == "image":
         prompt["prompt_content"] = prompt_content
-        request, response = image_processing.process_image(args, prompt)
+        request, response = image_processing.process_image(args, prompt, system_instructions)
     elif args.scope == "text":
         request, response = text_processing.process_text(args, prompt_content, system_instructions)
     else:
@@ -213,7 +218,7 @@ def main() -> int:
     if args.output:
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w") as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(output_text)
     else:
         print(output_text)
