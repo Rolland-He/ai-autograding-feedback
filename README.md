@@ -308,6 +308,7 @@ python3 -m ai_feedback --prompt code_table --scope code \
         --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
         --model deepSeek-v3 --llama_mode server
 ```
+
 #### Evalute the Jupyter notebook of test1 of ggr274 using DeepSeek-v3 via llama.cpp cli
 ```sh
 python3 -m ai_feedback --prompt code_table --scope code \
