@@ -104,7 +104,7 @@ def gather_file_contents(assignment_files: List[Optional[Path]]) -> str:
             # Handle PDF files separately
             if filename.lower().endswith('.pdf'):
                 text_content = extract_pdf_text(file_path)
-                file_contents += f"=== {filename} ===\n"
+                file_contents += f"<file name=\"{filename}\">\n"
                 lines = text_content.split('\n')
                 for i, line in enumerate(lines, start=1):
                     stripped_line = line.rstrip()
@@ -112,20 +112,20 @@ def gather_file_contents(assignment_files: List[Optional[Path]]) -> str:
                         file_contents += f"(Line {i}) {stripped_line}\n"
                     else:
                         file_contents += f"(Line {i}) \n"
-                file_contents += "\n"
+                file_contents += "</file>\n\n"
             else:
                 # Handle regular text files
                 with open(file_path, "r", encoding="utf-8") as file:
                     lines = file.readlines()
 
-                file_contents += f"=== {filename} ===\n"
+                file_contents += f"<file name=\"{filename}\">\n"
                 for i, line in enumerate(lines, start=1):
                     stripped_line = line.rstrip("\n")
                     if stripped_line.strip():
                         file_contents += f"(Line {i}) {stripped_line}\n"
                     else:
                         file_contents += f"(Line {i}) {line}"
-                file_contents += "\n"
+                file_contents += "</file>\n\n"
 
         except Exception as e:
             print(f"Error reading file {filename}: {e}")
@@ -273,9 +273,10 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
             task_content = task_match.group(1).strip()
             task_found = True
 
-        file_contents += f"\n\n---\n### {file_path}\n\n"
+        file_contents += f"<file name=\"{file_path.name}\">\n"
         file_contents += intro_content + "\n\n" if intro_content else ""
         file_contents += task_content + "\n\n"
+        file_contents += "</file>\n\n"
 
     if not task_found:
         print(f"Task {question_num} not found in any assignment file.")
