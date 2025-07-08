@@ -52,28 +52,6 @@ def load_markdown_template(template: str) -> str:
         sys.exit(1)
 
 
-def load_markdown_prompt(prompt_name: str) -> dict:
-    """Loads a markdown prompt file.
-
-    Args:
-        prompt_name (str): Name of the prompt file (without extension)
-
-    Returns:
-        dict: Dictionary containing prompt_content
-
-    Raises:
-        SystemExit: If the prompt file is not found
-    """
-    try:
-        prompt_file = os.path.join(os.path.dirname(__file__), f"data/prompts/user/{prompt_name}.md")
-        with open(prompt_file, "r") as file:
-            prompt_content = file.read()
-        return {"prompt_content": prompt_content}
-    except FileNotFoundError:
-        print(f"Error: Prompt file '{prompt_name}.md' not found in user subfolder.")
-        sys.exit(1)
-
-
 def _load_content_with_fallback(
     content_arg: str, predefined_values: list[str], predefined_subdir: str, content_type: str
 ) -> str:
