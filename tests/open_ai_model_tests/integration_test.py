@@ -30,8 +30,8 @@ def test_cnn_example_openai_stdout(capsys, mock_and_capture):
 
     assert "Compare the student's code and solution code. For each mistake" in output
     assert "(Line 1) import numpy as np" in output
-    assert "=== cnn_submission.py ===" in output
-    assert "=== cnn_solution.py ===" in output
+    assert '<file name="cnn_submission.py">' in output
+    assert '<file name="cnn_solution.py">' in output
 
 
 def test_cnn_example_custom_prompt_stdout(capsys, mock_and_capture):
@@ -58,7 +58,7 @@ def test_cnn_example_custom_prompt_stdout(capsys, mock_and_capture):
     ]
     output = run_cli_and_capture(args, capsys)
     assert "Evaluate the student's code readability." in output
-    assert "=== cnn_submission.py ===" in output
+    assert '<file name="cnn_submission.py">' in output
     assert "(Line 1) import numpy as np" in output
 
 
