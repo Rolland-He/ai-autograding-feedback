@@ -44,18 +44,22 @@ def render_prompt_template(
     else:
         template_data['file_contents'] = gather_xml_file_contents(submission, solution, test_output)
 
-    # Handle image placeholders with original text format
+    # Handle image placeholders with context-aware replacement
     if '{submission_image}' in prompt_content and 'submission_image' not in template_data:
-        if has_submission_image:
-            template_data['submission_image'] = 'The attached image is the student\'s submission'
+        if has_submission_image and has_solution_image:
+            template_data['submission_image'] = 'The first attached image is the student\'s submission.'
+        elif has_submission_image:
+            template_data['submission_image'] = 'The attached image is the student\'s submission.'
         else:
-            template_data['submission_image'] = '[No submission image provided]'
+            template_data['submission_image'] = '[Submission Image Attached]'
 
     if '{solution_image}' in prompt_content and 'solution_image' not in template_data:
-        if has_solution_image:
-            template_data['solution_image'] = 'The attached image is the instructor\'s solution'
+        if has_submission_image and has_solution_image:
+            template_data['solution_image'] = 'The second attached image is the expected solution.'
+        elif has_solution_image:
+            template_data['solution_image'] = 'The attached image is the expected solution.'
         else:
-            template_data['solution_image'] = '[No solution image provided]'
+            template_data['solution_image'] = '[Solution Image Attached]'
 
     return prompt_content.format(**template_data)
 
