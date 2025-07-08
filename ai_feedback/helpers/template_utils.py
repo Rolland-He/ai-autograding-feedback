@@ -42,24 +42,24 @@ def render_prompt_template(
     if question_num is not None:
         template_data['file_contents'] = _get_question_contents([submission, solution], question_num)
     else:
-        template_data['file_contents'] = gather_file_contents([submission, solution, test_output])
+        template_data['file_contents'] = gather_xml_file_contents(submission, solution, test_output)
 
-    # Handle image placeholders with context-aware replacement
+    # Handle image placeholders with XML tags
     if '{submission_image}' in prompt_content and 'submission_image' not in template_data:
-        if has_submission_image and has_solution_image:
-            template_data['submission_image'] = 'The first attached image is the student\'s submission.'
-        elif has_submission_image:
-            template_data['submission_image'] = 'The attached image is the student\'s submission.'
+        if has_submission_image:
+            # Extract filename from kwargs if available, otherwise use generic name
+            filename = kwargs.get('submission_image_filename', 'submission_image.png')
+            template_data['submission_image'] = f'<submission_image file="{filename}">[Image attached]</submission_image>'
         else:
-            template_data['submission_image'] = '[Submission Image Attached]'
+            template_data['submission_image'] = '<submission_image>[No image provided]</submission_image>'
 
     if '{solution_image}' in prompt_content and 'solution_image' not in template_data:
-        if has_submission_image and has_solution_image:
-            template_data['solution_image'] = 'The second attached image is the expected solution.'
-        elif has_solution_image:
-            template_data['solution_image'] = 'The attached image is the expected solution.'
+        if has_solution_image:
+            # Extract filename from kwargs if available, otherwise use generic name
+            filename = kwargs.get('solution_image_filename', 'solution_image.png')
+            template_data['solution_image'] = f'<solution_image file="{filename}">[Image attached]</solution_image>'
         else:
-            template_data['solution_image'] = '[Solution Image Attached]'
+            template_data['solution_image'] = '<solution_image>[No image provided]</solution_image>'
 
     return prompt_content.format(**template_data)
 
@@ -84,54 +84,78 @@ def gather_file_references(submission: Path, solution: Optional[Path], test_outp
     return "\n".join(references)
 
 
-def gather_file_contents(assignment_files: List[Optional[Path]]) -> str:
-    """Generate file contents with line numbers for prompt templates.
+def gather_xml_file_contents(submission: Path, solution: Optional[Path] = None, test_output: Optional[Path] = None) -> str:
+    """Generate file contents with XML tags for prompt templates.
 
     Args:
-        assignment_files (list[str]): List of file paths to process
+        submission (Path): Student's submission file path
+        solution (Path, optional): Instructor's solution file path  
+        test_output (Path, optional): Student's test output file path
 
     Returns:
-        str: File contents formatted with line numbers
+        str: File contents formatted with XML tags and line numbers
     """
     file_contents = ""
+    
+    file_contents += _format_file_with_xml_tag(submission, "submission")
 
-    for file_path in assignment_files:
-        if not file_path:
-            continue
-        filename = os.path.basename(file_path)
+    if solution:
+        file_contents += _format_file_with_xml_tag(solution, "solution")
 
-        try:
-            # Handle PDF files separately
-            if filename.lower().endswith('.pdf'):
-                text_content = extract_pdf_text(file_path)
-                file_contents += f"<file name=\"{filename}\">\n"
-                lines = text_content.split('\n')
-                for i, line in enumerate(lines, start=1):
-                    stripped_line = line.rstrip()
-                    if stripped_line.strip():
-                        file_contents += f"(Line {i}) {stripped_line}\n"
-                    else:
-                        file_contents += f"(Line {i}) \n"
-                file_contents += "</file>\n\n"
-            else:
-                # Handle regular text files
-                with open(file_path, "r", encoding="utf-8") as file:
-                    lines = file.readlines()
-
-                file_contents += f"<file name=\"{filename}\">\n"
-                for i, line in enumerate(lines, start=1):
-                    stripped_line = line.rstrip("\n")
-                    if stripped_line.strip():
-                        file_contents += f"(Line {i}) {stripped_line}\n"
-                    else:
-                        file_contents += f"(Line {i}) {line}"
-                file_contents += "</file>\n\n"
-
-        except Exception as e:
-            print(f"Error reading file {filename}: {e}")
-            continue
-
+    if test_output:
+        file_contents += _format_file_with_xml_tag(test_output, "test_output")
+    
     return file_contents
+
+
+def _format_file_with_xml_tag(file_path: Path, tag_name: str) -> str:
+    """Format a single file with XML tags and line numbers.
+    
+    Args:
+        file_path (Path): Path to the file to format
+        tag_name (str): The XML tag name (submission, solution, test_output)
+    
+    Returns:
+        str: Formatted file content with XML tags
+    """
+    if not file_path:
+        return ""
+        
+    filename = os.path.basename(file_path)
+    content = ""
+    
+    try:
+        # Handle PDF files separately
+        if filename.lower().endswith('.pdf'):
+            text_content = extract_pdf_text(file_path)
+            content += f"<{tag_name} file=\"{filename}\">\n"
+            lines = text_content.split('\n')
+            for i, line in enumerate(lines, start=1):
+                stripped_line = line.rstrip()
+                if stripped_line.strip():
+                    content += f"(Line {i}) {stripped_line}\n"
+                else:
+                    content += f"(Line {i}) \n"
+            content += f"</{tag_name}>\n\n"
+        else:
+            # Handle regular text files
+            with open(file_path, "r", encoding="utf-8") as file:
+                lines = file.readlines()
+
+            content += f"<{tag_name} file=\"{filename}\">\n"
+            for i, line in enumerate(lines, start=1):
+                stripped_line = line.rstrip("\n")
+                if stripped_line.strip():
+                    content += f"(Line {i}) {stripped_line}\n"
+                else:
+                    content += f"(Line {i}) {line}"
+            content += f"</{tag_name}>\n\n"
+
+    except Exception as e:
+        print(f"Error reading file {filename}: {e}")
+        return ""
+
+    return content
 
 
 def extract_pdf_text(pdf_path: str) -> str:
@@ -240,6 +264,7 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
 
     Args:
         assignment_files (List[Optional[Path]]): List of Path or None objects to parse.
+            Expected order: [submission, solution]
         question_num (int): The target task number to extract.
 
     Returns:
@@ -250,8 +275,10 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
     """
     file_contents = ""
     task_found = False
+    
+    semantic_tags = ["submission", "solution"]
 
-    for file_path in assignment_files:
+    for index, file_path in enumerate(assignment_files):
         if (
             not file_path
             or file_path.suffix != '.txt'
@@ -273,10 +300,12 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
             task_content = task_match.group(1).strip()
             task_found = True
 
-        file_contents += f"<file name=\"{file_path.name}\">\n"
+        # Use semantic tag based on file position
+        tag_name = semantic_tags[index] if index < len(semantic_tags) else "file"
+        file_contents += f"<{tag_name} file=\"{file_path.name}\">\n"
         file_contents += intro_content + "\n\n" if intro_content else ""
         file_contents += task_content + "\n\n"
-        file_contents += "</file>\n\n"
+        file_contents += f"</{tag_name}>\n\n"
 
     if not task_found:
         print(f"Task {question_num} not found in any assignment file.")
