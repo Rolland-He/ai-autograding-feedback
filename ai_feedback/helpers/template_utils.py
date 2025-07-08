@@ -44,22 +44,18 @@ def render_prompt_template(
     else:
         template_data['file_contents'] = gather_xml_file_contents(submission, solution, test_output)
 
-    # Handle image placeholders with XML tags
+    # Handle image placeholders with original text format
     if '{submission_image}' in prompt_content and 'submission_image' not in template_data:
         if has_submission_image:
-            # Extract filename from kwargs if available, otherwise use generic name
-            filename = kwargs.get('submission_image_filename', 'submission_image.png')
-            template_data['submission_image'] = f'<submission_image file="{filename}">[Image attached]</submission_image>'
+            template_data['submission_image'] = 'The attached image is the student\'s submission'
         else:
-            template_data['submission_image'] = '<submission_image>[No image provided]</submission_image>'
+            template_data['submission_image'] = '[No submission image provided]'
 
     if '{solution_image}' in prompt_content and 'solution_image' not in template_data:
         if has_solution_image:
-            # Extract filename from kwargs if available, otherwise use generic name
-            filename = kwargs.get('solution_image_filename', 'solution_image.png')
-            template_data['solution_image'] = f'<solution_image file="{filename}">[Image attached]</solution_image>'
+            template_data['solution_image'] = 'The attached image is the instructor\'s solution'
         else:
-            template_data['solution_image'] = '<solution_image>[No image provided]</solution_image>'
+            template_data['solution_image'] = '[No solution image provided]'
 
     return prompt_content.format(**template_data)
 
@@ -300,7 +296,6 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
             task_content = task_match.group(1).strip()
             task_found = True
 
-        # Use semantic tag based on file position
         tag_name = semantic_tags[index] if index < len(semantic_tags) else "file"
         file_contents += f"<{tag_name} file=\"{file_path.name}\">\n"
         file_contents += intro_content + "\n\n" if intro_content else ""
