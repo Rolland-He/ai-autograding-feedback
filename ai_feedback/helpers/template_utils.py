@@ -64,11 +64,11 @@ def render_prompt_template(
     return prompt_content.format(**template_data)
 
 
-def gather_file_references(submission: Path, solution: Optional[Path], test_output: Optional[Path]) -> str:
+def gather_file_references(submission: Optional[Path], solution: Optional[Path], test_output: Optional[Path]) -> str:
     """Generate file reference descriptions for prompt templates.
 
     Args:
-        submission (Path): Student's submission file path
+        submission (Path, optional): Student's submission file path
         solution (Path, optional): Instructor's solution file path
         test_output (Path, optional): Student's test output file path
 
@@ -76,7 +76,8 @@ def gather_file_references(submission: Path, solution: Optional[Path], test_outp
         str: Descriptions like "The instructor's solution file..."
     """
     references: List[str] = []
-    references.append(f"The student's submission file is {submission.name}.")
+    if submission:
+        references.append(f"The student's submission file is {submission.name}.")
     if solution:
         references.append(f"The instructor's solution file is {solution.name}.")
     if test_output:
