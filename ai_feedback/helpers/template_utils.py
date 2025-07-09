@@ -64,7 +64,7 @@ def render_prompt_template(
     return prompt_content.format(**template_data)
 
 
-def gather_file_references(submission: Optional[Path], solution: Optional[Path], test_output: Optional[Path]) -> str:
+def gather_file_references(submission: Optional[Path] = None, solution: Optional[Path] = None, test_output: Optional[Path] = None) -> str:
     """Generate file reference descriptions for prompt templates.
 
     Args:
@@ -86,7 +86,7 @@ def gather_file_references(submission: Optional[Path], solution: Optional[Path],
 
 
 def gather_xml_file_contents(
-    submission: Optional[Path], solution: Optional[Path] = None, test_output: Optional[Path] = None
+    submission: Optional[Path] = None, solution: Optional[Path] = None, test_output: Optional[Path] = None
 ) -> str:
     """Generate file contents with XML tags for prompt templates.
 
@@ -110,38 +110,6 @@ def gather_xml_file_contents(
         file_contents += _format_file_with_xml_tag(test_output, "test_output")
 
     return file_contents
-
-
-def _wrap_lines_with_xml(lines: List[str], tag_name: str, filename: str, is_pdf: bool = False) -> str:
-    """Wrap lines with XML tags and add line numbers.
-    
-    Args:
-        lines (List[str]): List of lines to format
-        tag_name (str): The XML tag name (submission, solution, test_output)
-        filename (str): The filename to include in the XML tag
-        is_pdf (bool): Whether this is PDF content (affects empty line handling)
-    
-    Returns:
-        str: Formatted content with XML tags and line numbers
-    """
-    content = f"<{tag_name} file=\"{filename}\">\n"
-    
-    for i, line in enumerate(lines, start=1):
-        if is_pdf:
-            stripped_line = line.rstrip()
-            if stripped_line.strip():
-                content += f"(Line {i}) {stripped_line}\n"
-            else:
-                content += f"(Line {i}) \n"
-        else:
-            stripped_line = line.rstrip("\n")
-            if stripped_line.strip():
-                content += f"(Line {i}) {stripped_line}\n"
-            else:
-                content += f"(Line {i}) {line}"
-    
-    content += f"</{tag_name}>\n\n"
-    return content
 
 
 def _format_file_with_xml_tag(file_path: Path, tag_name: str) -> str:
@@ -174,6 +142,38 @@ def _format_file_with_xml_tag(file_path: Path, tag_name: str) -> str:
     except Exception as e:
         print(f"Error reading file {filename}: {e}")
         return ""
+
+
+def _wrap_lines_with_xml(lines: List[str], tag_name: str, filename: str, is_pdf: bool = False) -> str:
+    """Wrap lines with XML tags and add line numbers.
+    
+    Args:
+        lines (List[str]): List of lines to format
+        tag_name (str): The XML tag name (submission, solution, test_output)
+        filename (str): The filename to include in the XML tag
+        is_pdf (bool): Whether this is PDF content (affects empty line handling)
+    
+    Returns:
+        str: Formatted content with XML tags and line numbers
+    """
+    content = f"<{tag_name} file=\"{filename}\">\n"
+    
+    for i, line in enumerate(lines, start=1):
+        if is_pdf:
+            stripped_line = line.rstrip()
+            if stripped_line.strip():
+                content += f"(Line {i}) {stripped_line}\n"
+            else:
+                content += f"(Line {i}) \n"
+        else:
+            stripped_line = line.rstrip("\n")
+            if stripped_line.strip():
+                content += f"(Line {i}) {stripped_line}\n"
+            else:
+                content += f"(Line {i}) {line}"
+    
+    content += f"</{tag_name}>\n\n"
+    return content
 
 
 def extract_pdf_text(pdf_path: str) -> str:
