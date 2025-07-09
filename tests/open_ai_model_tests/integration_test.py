@@ -95,20 +95,20 @@ def test_xml_formatting_code_scope(capsys, mock_and_capture):
     args = [
         "--prompt_text",
         "File references: {file_references}\n\nFile contents:\n{file_contents}",
-        "--scope", 
+        "--scope",
         "code",
         "--submission",
         str(parent / "test_submissions/csc108/correct_submission/correct_submission.py"),
         "--solution",
         str(parent / "test_submissions/csc108/solution.py"),
         "--model",
-        "openai"
+        "openai",
     ]
     output = run_cli_and_capture(args, capsys)
-    
+
     assert "The student's submission file is correct_submission.py." in output
     assert "The instructor's solution file is solution.py." in output
-    
+
     assert '<submission file="correct_submission.py">' in output
     assert '</submission>' in output
     assert '<solution file="solution.py">' in output
@@ -130,19 +130,19 @@ def test_xml_formatting_text_scope_with_test_output(capsys, mock_and_capture):
         "--submission_type",
         "python",
         "--scope",
-        "text", 
+        "text",
         "--submission",
         str(parent / "test_submissions/ggr274_homework5/test1/student_submission.txt"),
         "--solution",
         str(parent / "test_submissions/ggr274_homework5/test1/Homework_5_solution.txt"),
         "--model",
-        "openai"
+        "openai",
     ]
     output = run_cli_and_capture(args, capsys)
-    
+
     assert "The student's submission file is student_submission.txt." in output
-    assert "The instructor's solution file is Homework_5_solution.txt." in output  
-    
+    assert "The instructor's solution file is Homework_5_solution.txt." in output
+
     assert '<submission file="student_submission.txt">' in output
     assert '</submission>' in output
     assert '<solution file="Homework_5_solution.txt">' in output

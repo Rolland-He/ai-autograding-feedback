@@ -85,19 +85,21 @@ def gather_file_references(submission: Optional[Path], solution: Optional[Path],
     return "\n".join(references)
 
 
-def gather_xml_file_contents(submission: Path, solution: Optional[Path] = None, test_output: Optional[Path] = None) -> str:
+def gather_xml_file_contents(
+    submission: Path, solution: Optional[Path] = None, test_output: Optional[Path] = None
+) -> str:
     """Generate file contents with XML tags for prompt templates.
 
     Args:
         submission (Path): Student's submission file path
-        solution (Path, optional): Instructor's solution file path  
+        solution (Path, optional): Instructor's solution file path
         test_output (Path, optional): Student's test output file path
 
     Returns:
         str: File contents formatted with XML tags and line numbers
     """
     file_contents = ""
-    
+
     file_contents += _format_file_with_xml_tag(submission, "submission")
 
     if solution:
@@ -105,26 +107,26 @@ def gather_xml_file_contents(submission: Path, solution: Optional[Path] = None, 
 
     if test_output:
         file_contents += _format_file_with_xml_tag(test_output, "test_output")
-    
+
     return file_contents
 
 
 def _format_file_with_xml_tag(file_path: Path, tag_name: str) -> str:
     """Format a single file with XML tags and line numbers.
-    
+
     Args:
         file_path (Path): Path to the file to format
         tag_name (str): The XML tag name (submission, solution, test_output)
-    
+
     Returns:
         str: Formatted file content with XML tags
     """
     if not file_path:
         return ""
-        
+
     filename = os.path.basename(file_path)
     content = ""
-    
+
     try:
         # Handle PDF files separately
         if filename.lower().endswith('.pdf'):
@@ -276,7 +278,7 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
     """
     file_contents = ""
     task_found = False
-    
+
     semantic_tags = ["submission", "solution"]
 
     for index, file_path in enumerate(assignment_files):
