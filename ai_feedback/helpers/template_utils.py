@@ -146,18 +146,18 @@ def _format_file_with_xml_tag(file_path: Path, tag_name: str) -> str:
 
 def _wrap_lines_with_xml(lines: List[str], tag_name: str, filename: str, is_pdf: bool = False) -> str:
     """Wrap lines with XML tags and add line numbers.
-    
+
     Args:
         lines (List[str]): List of lines to format
         tag_name (str): The XML tag name (submission, solution, test_output)
         filename (str): The filename to include in the XML tag
         is_pdf (bool): Whether this is PDF content (affects empty line handling)
-    
+
     Returns:
         str: Formatted content with XML tags and line numbers
     """
     content = f"<{tag_name} file=\"{filename}\">\n"
-    
+
     for i, line in enumerate(lines, start=1):
         if is_pdf:
             stripped_line = line.rstrip()
@@ -171,7 +171,7 @@ def _wrap_lines_with_xml(lines: List[str], tag_name: str, filename: str, is_pdf:
                 content += f"(Line {i}) {stripped_line}\n"
             else:
                 content += f"(Line {i}) {line}"
-    
+
     content += f"</{tag_name}>\n\n"
     return content
 
