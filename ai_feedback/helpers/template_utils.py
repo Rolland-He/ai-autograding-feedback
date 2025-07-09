@@ -86,12 +86,12 @@ def gather_file_references(submission: Optional[Path], solution: Optional[Path],
 
 
 def gather_xml_file_contents(
-    submission: Path, solution: Optional[Path] = None, test_output: Optional[Path] = None
+    submission: Optional[Path], solution: Optional[Path] = None, test_output: Optional[Path] = None
 ) -> str:
     """Generate file contents with XML tags for prompt templates.
 
     Args:
-        submission (Path): Student's submission file path
+        submission (Path, optional): Student's submission file path
         solution (Path, optional): Instructor's solution file path
         test_output (Path, optional): Student's test output file path
 
@@ -100,7 +100,8 @@ def gather_xml_file_contents(
     """
     file_contents = ""
 
-    file_contents += _format_file_with_xml_tag(submission, "submission")
+    if submission:
+        file_contents += _format_file_with_xml_tag(submission, "submission")
 
     if solution:
         file_contents += _format_file_with_xml_tag(solution, "solution")
