@@ -156,7 +156,7 @@ def _wrap_lines_with_xml(lines: List[str], tag_name: str, filename: str, is_pdf:
     Returns:
         str: Formatted content with XML tags and line numbers
     """
-    content = f"<{tag_name} file=\"{filename}\">\n"
+    content = f"<{tag_name} filename=\"{filename}\">\n"
 
     for i, line in enumerate(lines, start=1):
         if is_pdf:
@@ -319,7 +319,7 @@ def _get_question_contents(assignment_files: List[Optional[Path]], question_num:
             task_found = True
 
         tag_name = semantic_tags[index] if index < len(semantic_tags) else "file"
-        file_contents += f"<{tag_name} file=\"{file_path.name}\">\n"
+        file_contents += f"<{tag_name} filename=\"{file_path.name}\">\n"
         file_contents += intro_content + "\n\n" if intro_content else ""
         file_contents += task_content + "\n\n"
         file_contents += f"</{tag_name}>\n\n"
