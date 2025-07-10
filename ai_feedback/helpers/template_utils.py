@@ -64,7 +64,9 @@ def render_prompt_template(
     return prompt_content.format(**template_data)
 
 
-def gather_file_references(submission: Optional[Path] = None, solution: Optional[Path] = None, test_output: Optional[Path] = None) -> str:
+def gather_file_references(
+    submission: Optional[Path] = None, solution: Optional[Path] = None, test_output: Optional[Path] = None
+) -> str:
     """Generate file reference descriptions for prompt templates.
 
     Args:
