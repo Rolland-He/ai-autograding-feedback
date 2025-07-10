@@ -80,4 +80,3 @@ def validate_image_annotation_schema(result: list):
 def test_model_outputs_valid_image_annotation_schema(model):
     result = run_image_cli(model)
     validate_image_annotation_schema(result)
- 
