@@ -29,8 +29,8 @@ def test_cnn_example_openai_stdout(capsys, mock_and_capture):
 
     assert "Compare the student's code and solution code. For each mistake" in output
     assert "(Line 1) import numpy as np" in output
-    assert '<submission file="cnn_submission.py">' in output
-    assert '<solution file="cnn_solution.py">' in output
+    assert '<submission filename="cnn_submission.py">' in output
+    assert '<solution filename="cnn_solution.py">' in output
 
 
 def test_cnn_example_custom_prompt_stdout(capsys, mock_and_capture):
@@ -56,7 +56,7 @@ def test_cnn_example_custom_prompt_stdout(capsys, mock_and_capture):
     ]
     output = run_cli_and_capture(args, capsys)
     assert "Evaluate the student's code readability." in output
-    assert '<submission file="cnn_submission.py">' in output
+    assert '<submission filename="cnn_submission.py">' in output
     assert "(Line 1) import numpy as np" in output
 
 
@@ -109,9 +109,9 @@ def test_xml_formatting_code_scope(capsys, mock_and_capture):
     assert "The student's submission file is correct_submission.py." in output
     assert "The instructor's solution file is solution.py." in output
 
-    assert '<submission file="correct_submission.py">' in output
+    assert '<submission filename="correct_submission.py">' in output
     assert '</submission>' in output
-    assert '<solution file="solution.py">' in output
+    assert '<solution filename="solution.py">' in output
     assert '</solution>' in output
 
     assert "(Line 1) def fizzbuzz(n: int) -> list:" in output
@@ -143,7 +143,7 @@ def test_xml_formatting_text_scope_with_test_output(capsys, mock_and_capture):
     assert "The student's submission file is student_submission.txt." in output
     assert "The instructor's solution file is Homework_5_solution.txt." in output
 
-    assert '<submission file="student_submission.txt">' in output
+    assert '<submission filename="student_submission.txt">' in output
     assert '</submission>' in output
-    assert '<solution file="Homework_5_solution.txt">' in output
+    assert '<solution filename="Homework_5_solution.txt">' in output
     assert '</solution>' in output
