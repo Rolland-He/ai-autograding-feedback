@@ -1,7 +1,7 @@
 import json
 import subprocess
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import pytest
 
@@ -49,11 +49,11 @@ def run_image_cli(model_name: str, schema_path: str = None) -> list:
 def parse_strict_json(output: str, model_name: str) -> list:
     """Strict JSON parsing - require proper ```json``` markdown blocks"""
     assert "```json" in output, f"{model_name} output must contain ```json``` markdown block"
-    
+
     json_start = output.find("```json") + 7
     json_end = output.find("```", json_start)
     assert json_end != -1, f"{model_name} output has malformed ```json``` block(no closing ```)"
-    
+
     json_text = output[json_start:json_end].strip()
     assert json_text, f"{model_name} output has empty JSON block"
 
@@ -64,21 +64,24 @@ def validate_schema_constraints(result: list):
     """Validate that the result strictly follows ALL schema constraints"""
     assert isinstance(result, list), "Result must be a list"
     assert len(result) > 0, "Result must contain at least one annotation"
-    
+
     for item in result:
         assert isinstance(item, dict), "Each annotation must be an object"
-        
+
         assert "description" in item, "Missing required field: description"
         assert "location" in item, "Missing required field: location"
-        
-        assert set(item.keys()) == {"description", "location"}, f"Extra fields found: {set(item.keys()) - {'description', 'location'}}"
-        
+
+        assert set(item.keys()) == {
+            "description",
+            "location",
+        }, f"Extra fields found: {set(item.keys()) - {'description', 'location'}}"
+
         assert isinstance(item["description"], str), "description must be a string"
         assert len(item["description"]) > 0, "description cannot be empty"
-        
+
         assert isinstance(item["location"], list), "location must be a list"
         assert len(item["location"]) == 4, f"location must have exactly 4 coordinates"
-        
+
         for i, coord in enumerate(item["location"]):
             assert isinstance(coord, (int, float)), f"coordinate {i} must be a number"
             assert coord >= 0, f"coordinate {i} must be have minimum 0"
@@ -94,7 +97,7 @@ def test_invalid_schema_file():
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
         json.dump({"invalid": "schema"}, f)
         invalid_schema_path = f.name
-    
+
     try:
         result_process = run_image_cli("openai", invalid_schema_path)
         if result_process.returncode == 0:
