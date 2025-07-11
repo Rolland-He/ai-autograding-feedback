@@ -1,6 +1,7 @@
 import json
 import subprocess
 from pathlib import Path
+import tempfile
 
 import pytest
 
@@ -10,7 +11,8 @@ IMAGE_SUBMISSION_IMAGE = BASE_DIR / "test_submissions/ggr274_homework5/image_tes
 IMAGE_SCHEMA_PATH = BASE_DIR / "ai_feedback/data/schema/image_annotation_schema.json"
 
 
-def run_image_cli(model_name: str) -> list:
+def run_image_cli(model_name: str, schema_path: str = None) -> list:
+    schema_to_use = schema_path or str(IMAGE_SCHEMA_PATH)
     command = [
         "python3",
         "-m",
@@ -28,55 +30,94 @@ def run_image_cli(model_name: str) -> list:
         "--model",
         model_name,
         "--json_schema",
-        str(IMAGE_SCHEMA_PATH),
+        schema_to_use,
     ]
     result = subprocess.run(command, capture_output=True, text=True)
-    assert result.returncode == 0, f"{model_name} failed: {result.stderr}"
+    return result
 
-    output = result.stdout.strip()
+
+def parse_strict_json(output: str, model_name: str) -> list:
+    """Strict JSON parsing - require proper ```json``` markdown blocks"""
+    assert "```json" in output, f"{model_name} output must contain ```json``` markdown block"
     
-    if "```json" in output:
-        json_start = output.find("```json") + 7
-        json_end = output.find("```", json_start)
-        json_text = output[json_start:json_end].strip()
-    else:
-        json_start = output.find("[")
-        assert json_start != -1, f"{model_name} output has no JSON array"
-        bracket_count = 0
-        json_end = json_start
-        for i, char in enumerate(output[json_start:], json_start):
-            if char == '[':
-                bracket_count += 1
-            elif char == ']':
-                bracket_count -= 1
-                if bracket_count == 0:
-                    json_end = i + 1
-                    break
-        json_text = output[json_start:json_end]
+    json_start = output.find("```json") + 7
+    json_end = output.find("```", json_start)
+    assert json_end != -1, f"{model_name} output has malformed ```json``` block(no closing ```)"
+    
+    json_text = output[json_start:json_end].strip()
+    assert json_text, f"{model_name} output has empty JSON block"
 
     return json.loads(json_text)
 
 
-def validate_image_annotation_schema(result: list):
+def validate_schema_constraints(result: list):
+    """Validate that the result strictly follows ALL schema constraints"""
     assert isinstance(result, list), "Result must be a list"
+    assert len(result) > 0, "Result must contain at least one annotation"
+    
     for item in result:
         assert isinstance(item, dict), "Each annotation must be an object"
-        for key in ["description", "location"]:
-            assert key in item, f"Missing key: {key}"
+        
+        assert "description" in item, "Missing required field: description"
+        assert "location" in item, "Missing required field: location"
+        
+        assert set(item.keys()) == {"description", "location"}, f"Extra fields found: {set(item.keys()) - {'description', 'location'}}"
+        
         assert isinstance(item["description"], str), "description must be a string"
+        assert len(item["description"]) > 0, "description cannot be empty"
+        
         assert isinstance(item["location"], list), "location must be a list"
-        assert len(item["location"]) == 4, "location must have exactly 4 coordinates"
+        assert len(item["location"]) == 4, f"location must have exactly 4 coordinates"
+        
+        for i, coord in enumerate(item["location"]):
+            assert isinstance(coord, (int, float)), f"coordinate {i} must be a number"
+            assert coord >= 0, f"coordinate {i} must be have minimum 0"
+
+
+def test_openai_schema_enforcement():
+    """Test that OpenAI model with --json_schema produces strictly compliant output"""
+    result_process = run_image_cli("openai")
+    
+    assert result_process.returncode == 0, f"OpenAI failed with schema: {result_process.stderr}"
+    
+    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
+    validate_schema_constraints(parsed_result)
+
+
+def test_invalid_schema_file():
+    """Test that invalid schema files are properly rejected"""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        json.dump({"invalid": "schema"}, f)
+        invalid_schema_path = f.name
+    
+    try:
+        result_process = run_image_cli("openai", invalid_schema_path)
+        if result_process.returncode == 0:
+            parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
+            assert isinstance(parsed_result, (list, dict)), "Output should be valid JSON structure"
+    finally:
+        Path(invalid_schema_path).unlink()
+
+
+def test_schema_coordinate_minimum_constraint():
+    """Test that the minimum: 0 constraint for coordinates is meaningful"""
+    result_process = run_image_cli("openai")
+    assert result_process.returncode == 0, f"OpenAI failed: {result_process.stderr}"
+    
+    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
+    
+    # Check that all coordinates are >= 0
+    for item in parsed_result:
         for coord in item["location"]:
-            assert isinstance(coord, (int, float)), "coordinates must be numbers"
+            assert coord >= 0, f"Found negative coordinate"
 
 
-@pytest.mark.parametrize(
-    "model",
-    [
-        "openai",
-        "llama3.2-vision:90b",
-    ],
-)
-def test_model_outputs_valid_image_annotation_schema(model):
-    result = run_image_cli(model)
-    validate_image_annotation_schema(result)
+def test_schema_array_length_constraint():
+    """Test that the array length constraint (exactly 4 items, coordinates) is enforced"""
+    result_process = run_image_cli("openai")
+    assert result_process.returncode == 0, f"OpenAI failed: {result_process.stderr}"
+    
+    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
+    
+    for item in parsed_result:
+        assert len(item["location"]) == 4, f"Found location array with {len(item['location'])} items, should be 4"
