@@ -16,7 +16,7 @@ def openai_schema_result():
     """Module-scoped fixture that makes one OpenAI API call and returns the parsed result"""
     result_process = run_image_cli("openai")
     assert result_process.returncode == 0, f"OpenAI failed with schema: {result_process.stderr}"
-    
+
     parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
     return parsed_result
 
