@@ -11,6 +11,16 @@ IMAGE_SUBMISSION_IMAGE = BASE_DIR / "test_submissions/ggr274_homework5/image_tes
 IMAGE_SCHEMA_PATH = BASE_DIR / "ai_feedback/data/schema/image_annotation_schema.json"
 
 
+@pytest.fixture(scope="module")
+def openai_schema_result():
+    """Module-scoped fixture that makes one OpenAI API call and returns the parsed result"""
+    result_process = run_image_cli("openai")
+    assert result_process.returncode == 0, f"OpenAI failed with schema: {result_process.stderr}"
+    
+    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
+    return parsed_result
+
+
 def run_image_cli(model_name: str, schema_path: str = None) -> list:
     schema_to_use = schema_path or str(IMAGE_SCHEMA_PATH)
     command = [
@@ -74,14 +84,9 @@ def validate_schema_constraints(result: list):
             assert coord >= 0, f"coordinate {i} must be have minimum 0"
 
 
-def test_openai_schema_enforcement():
+def test_openai_schema_enforcement(openai_schema_result):
     """Test that OpenAI model with --json_schema produces strictly compliant output"""
-    result_process = run_image_cli("openai")
-    
-    assert result_process.returncode == 0, f"OpenAI failed with schema: {result_process.stderr}"
-    
-    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
-    validate_schema_constraints(parsed_result)
+    validate_schema_constraints(openai_schema_result)
 
 
 def test_invalid_schema_file():
@@ -99,25 +104,15 @@ def test_invalid_schema_file():
         Path(invalid_schema_path).unlink()
 
 
-def test_schema_coordinate_minimum_constraint():
+def test_schema_coordinate_minimum_constraint(openai_schema_result):
     """Test that the minimum: 0 constraint for coordinates is meaningful"""
-    result_process = run_image_cli("openai")
-    assert result_process.returncode == 0, f"OpenAI failed: {result_process.stderr}"
-    
-    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
-    
     # Check that all coordinates are >= 0
-    for item in parsed_result:
+    for item in openai_schema_result:
         for coord in item["location"]:
             assert coord >= 0, f"Found negative coordinate"
 
 
-def test_schema_array_length_constraint():
+def test_schema_array_length_constraint(openai_schema_result):
     """Test that the array length constraint (exactly 4 items, coordinates) is enforced"""
-    result_process = run_image_cli("openai")
-    assert result_process.returncode == 0, f"OpenAI failed: {result_process.stderr}"
-    
-    parsed_result = parse_strict_json(result_process.stdout.strip(), "openai")
-    
-    for item in parsed_result:
+    for item in openai_schema_result:
         assert len(item["location"]) == 4, f"Found location array with {len(item['location'])} items, should be 4"
