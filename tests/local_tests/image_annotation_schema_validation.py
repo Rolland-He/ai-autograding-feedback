@@ -47,17 +47,8 @@ def run_image_cli(model_name: str, schema_path: str = None) -> list:
 
 
 def parse_strict_json(output: str, model_name: str) -> list:
-    """Strict JSON parsing - require proper ```json``` markdown blocks"""
-    assert "```json" in output, f"{model_name} output must contain ```json``` markdown block"
-
-    json_start = output.find("```json") + 7
-    json_end = output.find("```", json_start)
-    assert json_end != -1, f"{model_name} output has malformed ```json``` block(no closing ```)"
-
-    json_text = output[json_start:json_end].strip()
-    assert json_text, f"{model_name} output has empty JSON block"
-
-    return json.loads(json_text)
+    """Parse JSON from plain text output"""
+    return json.loads(output.strip())
 
 
 def validate_schema_constraints(result: list):
