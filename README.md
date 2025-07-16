@@ -273,28 +273,27 @@ python -m ai_feedback -h
 
 #### Evaluate cnn_example test using openAI model
 ```bash
-python -m ai_feedback --prompt code_lines --scope code --submission eval/test_submissions/cnn_example/cnn_submission.py --solution eval/test_submissions/cnn_example/cnn_solution.py --model openai --output stdout
+python -m ai_feedback --prompt code_lines --scope code --submission eval/test_submissions/cnn_example/cnn_submission --solution eval/test_submissions/cnn_example/cnn_solution.py --model openai
 ```
 
 #### Evaluate cnn_example test using openAI model and custom prompt
 ```bash
-python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission eval/test_submissions/cnn_example/cnn_submission.py --model openai --output stdout
+python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission eval/test_submissions/cnn_example/cnn_submission.py --model openai
 ```
 
 #### Evaluate pdf_example test using openAI model
 ```bash
-python -m ai_feedback --prompt text_pdf_analyze --scope text --submission eval/test_submissions/pdf_example/student_pdf_submission.pdf --model openai --output direct
+python -m ai_feedback --prompt text_pdf_analyze --scope text --submission eval/test_submissions/pdf_example/student_pdf_submission.pdf --model openai
 ```
 
 #### Evaluate question1 of test1 of ggr274 homework using DeepSeek model
 ```bash
-python -m ai_feedback --prompt code_table \
-  --scope code --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb --question 1 --model deepSeek-R1:70B --output markdown
+python -m ai_feedback --prompt code_table --scope code --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb --question 1 --model deepSeek-R1:70B
 ```
 
 #### Evaluate the image for question 5b of ggr274 homework with Llama3.2-vision
 ```sh
-python -m ai_feedback --prompt image_analyze --scope image --submission eval/test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image eval/test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision --output stdout
+python -m ai_feedback --prompt image_analyze --scope image --submission eval/test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image eval/test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision
 ```
 
 ### Evaluate the bfs example with remote model to test_file using the verbose template
