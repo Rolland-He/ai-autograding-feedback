@@ -11,8 +11,8 @@ def test_deepseek_v3_cli_code_scope_stdout(capsys, monkeypatch):
     printing to stdout. We mock subprocess.run so that llama-cli never actually runs.
 
     python3 -m ai_feedback --prompt code_table --scope code \
-        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
-        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
         --model deepSeek-v3
     """
     monkeypatch.setenv("LLAMA_CLI_PATH", "/path/to/fake/llama-cli")
@@ -33,9 +33,9 @@ def test_deepseek_v3_cli_code_scope_stdout(capsys, monkeypatch):
             "--scope",
             "code",
             "--submission",
-            str(parent / "test_submissions/ggr274_homework5/test1/student_submission.ipynb"),
+            str(parent / "eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb"),
             "--solution",
-            str(parent / "test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb"),
+            str(parent / "eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb"),
             "--model",
             "deepSeek-v3",
         ]
@@ -51,8 +51,8 @@ def test_deepseek_v3_server_mode_code_scope_stdout(capsys, monkeypatch):
     printing to stdout. We mock requests.post so that no real HTTP request is made.
 
     python3 -m ai_feedback --prompt code_table --scope code \
-        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
-        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
         --model deepSeek-v3 --llama_mode server
     """
     # Ensure LLAMA_SERVER_URL is set so generate_response picks the server path:
@@ -85,9 +85,9 @@ def test_deepseek_v3_server_mode_code_scope_stdout(capsys, monkeypatch):
             "--scope",
             "code",
             "--submission",
-            str(parent / "test_submissions/ggr274_homework5/test1/student_submission.ipynb"),
+            str(parent / "eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb"),
             "--solution",
-            str(parent / "test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb"),
+            str(parent / "eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb"),
             "--model",
             "deepSeek-v3",
             "--llama_mode",

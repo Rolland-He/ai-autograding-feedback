@@ -8,8 +8,8 @@ def test_ggr274_image_question5b_llama_stdout(capsys, mock_and_capture):
     Example 5:
     Evaluate the image for question 5b of ggr274 homework with Llama3.2-vision, printing to stdout.
     python3 -m ai_feedback --prompt image_analyze --scope image \
-      --solution ./test_submissions/ggr274_homework5/image_test2/student_submission.ipynb \
-      --submission_image test_submissions/ggr274_homework5/image_test2/student_submission.png \
+      --solution ./eval/test_submissions/ggr274_homework5/image_test2/student_submission.ipynb \
+      --submission_image eval/test_submissions/ggr274_homework5/image_test2/student_submission.png \
       --question "Question 5b" --model llama3.2-vision --output stdout
     """
     parent = Path(__file__).parent.parent.parent
@@ -19,9 +19,9 @@ def test_ggr274_image_question5b_llama_stdout(capsys, mock_and_capture):
         "--scope",
         "image",
         "--submission",
-        str(parent / "test_submissions/ggr274_homework5/image_test2/student_submission.ipynb"),
+        str(parent / "eval/test_submissions/ggr274_homework5/image_test2/student_submission.ipynb"),
         "--submission_image",
-        str(parent / "test_submissions/ggr274_homework5/image_test2/student_submission.png"),
+        str(parent / "eval/test_submissions/ggr274_homework5/image_test2/student_submission.png"),
         "--question",
         "Question 5b",
         "--model",
