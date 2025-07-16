@@ -201,7 +201,7 @@ To test the program using the GGR274 files, we assume that the test assignment f
 
 ##### Directory Structure
 
-Within the `test_submissions/ggr274_homework5` directory, mock submissions are contained in a separate subdirectories `test_submissions/ggr274_homework5/test#`. The following naming convention is used for the files:
+Within the `eval/test_submissions/ggr274_homework5` directory, mock submissions are contained in a separate subdirectories `eval/test_submissions/ggr274_homework5/test#`. The following naming convention is used for the files:
 
 - `Homework_5_solution.ipynb` – Instructor-provided solution file
 - `student_submission.ipynb` – Student's submission file
@@ -273,48 +273,48 @@ python -m ai_feedback -h
 
 #### Evaluate cnn_example test using openAI model
 ```bash
-python -m ai_feedback --prompt code_lines --scope code --submission test_submissions/cnn_example/cnn_submission --solution test_submissions/cnn_example/cnn_solution.py --model openai
+python -m ai_feedback --prompt code_lines --scope code --submission eval/test_submissions/cnn_example/cnn_submission.py --solution eval/test_submissions/cnn_example/cnn_solution.py --model openai --output stdout
 ```
 
 #### Evaluate cnn_example test using openAI model and custom prompt
 ```bash
-python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission test_submissions/cnn_example/cnn_submission.py --model openai
+python -m ai_feedback --prompt_text "Evaluate the student's code readability." --scope code --submission eval/test_submissions/cnn_example/cnn_submission.py --model openai --output stdout
 ```
 
 #### Evaluate pdf_example test using openAI model
 ```bash
-python -m ai_feedback --prompt text_pdf_analyze --scope text --submission test_submissions/pdf_example/student_pdf_submission.pdf --model openai
+python -m ai_feedback --prompt text_pdf_analyze --scope text --submission eval/test_submissions/pdf_example/student_pdf_submission.pdf --model openai --output direct
 ```
 
 #### Evaluate question1 of test1 of ggr274 homework using DeepSeek model
 ```bash
 python -m ai_feedback --prompt code_table \
-  --scope code --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb --question 1 --model deepSeek-R1:70B
+  --scope code --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb --question 1 --model deepSeek-R1:70B --output markdown
 ```
 
 #### Evaluate the image for question 5b of ggr274 homework with Llama3.2-vision
 ```sh
-python -m ai_feedback --prompt image_analyze --scope image --solution ./test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision:90b
+python -m ai_feedback --prompt image_analyze --scope image --submission eval/test_submissions/ggr274_homework5/image_test2/student_submission.ipynb --submission_image eval/test_submissions/ggr274_homework5/image_test2/student_submission.png --question "Question 5b" --model llama3.2-vision --output stdout
 ```
 
 ### Evaluate the bfs example with remote model to test_file using the verbose template
 ```sh
-python -m ai_feedback --prompt code_lines --scope code --solution ./test_submissions/bfs_example/bfs_solution.py --submission test_submissions/bfs_example/bfs_submission.py --model remote --output --output test_file --output_template verbose
+python -m ai_feedback --prompt code_lines --scope code --solution ./eval/test_submissions/bfs_example/bfs_solution.py --submission eval/test_submissions/bfs_example/bfs_submission.py --model remote --output --output test_file --output_template verbose
 ```
 
 #### Evalute the Jupyter notebook of test1 of ggr274 using DeepSeek-v3 via llama.cpp server
 ```sh
 python3 -m ai_feedback --prompt code_table --scope code \
-        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
-        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
         --model deepSeek-v3 --llama_mode server
 ```
 
 #### Evalute the Jupyter notebook of test1 of ggr274 using DeepSeek-v3 via llama.cpp cli
 ```sh
 python3 -m ai_feedback --prompt code_table --scope code \
-        --submission test_submissions/ggr274_homework5/test1/student_submission.ipynb \
-        --solution test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
+        --submission eval/test_submissions/ggr274_homework5/test1/student_submission.ipynb \
+        --solution eval/test_submissions/ggr274_homework5/test1/Homework_5_solution.ipynb \
         --model deepSeek-v3 --llama_mode cli
 ```
 
@@ -326,7 +326,7 @@ python -m ai_feedback --prompt code_annotations --scope code --submission test_s
 
 #### Evaluate using custom prompt file path
 ```bash
-python -m ai_feedback --prompt ai_feedback/data/prompts/user/code_overall.md --scope code --submission test_submissions/csc108/correct_submission/correct_submission.py --solution test_submissions/csc108/solution.py --model codellama:latest
+python -m ai_feedback --prompt ai_feedback/data/prompts/user/code_overall.md --scope code --submission eval/test_submissions/csc108/correct_submission/correct_submission.py --solution eval/test_submissions/csc108/solution.py --model codellama:latest
 ```
 
 #### Using Ollama
@@ -357,7 +357,7 @@ This python package can be used as a dependency in the Markus Autotester, in ord
 ### Markus Test Scripts
 - /markus_test_scripts contains scripts which can be uploaded to the autotester in order to generate LLM Feedback
 - Currently, only openAI and Claude models are supported.
-- The /test_submissions directory has mock assignment submissions, solutions, and test files, used for testing the markus integration. These files can be submitted on the markus autotester along with the llm script files.
+- The /eval/test_submissions directory has mock assignment submissions, solutions, and test files, used for testing the markus integration. These files can be submitted on the markus autotester along with the llm script files.
 - Within these llm script files, the models and prompts used can be changed by editing the command line arguments, through the run_llm() function.
 
 Files:
@@ -386,7 +386,7 @@ Along with any other packages that the submission or solution file uses.
 
 #### Running Python Autotester Examples
 ##### CNN Example
-- Look at the /test_submissions/cnn_example directory for the following files
+- Look at the /eval/test_submissions/cnn_example directory for the following files
 - Instructor uploads: cnn_solution.py, cnn_test.py, llm_helpers.py, python_tester_llm_code.py files
 - Separate test groups for cnn_test.py and python_tester_llm_code.py
 - cnn_test.py Autotester package requirements: torch numpy
@@ -394,14 +394,14 @@ Along with any other packages that the submission or solution file uses.
 - Student uploads: cnn_submission.pdf
 
 ##### BFS Example
-- Look at the /test_submissions/bfs_example directory for the following files
+- Look at the /eval/test_submissions/bfs_example directory for the following files
 - Instructor uploads: bfs_solution.py, test_bfs.py, llm_helpers.py, python_tester_llm_code.py files
 - Separate test groups for test_bfs.py and python_tester_llm_code.py
 - python_tester_llm_code.py Autotester package requirements: git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 - Student uploads: bfs_submission.pdf
 
 ##### PDF Example
-- Look at the /test_submissions/pdf_example directory for the following files
+- Look at the /eval/test_submissions/pdf_example directory for the following files
 - Instructor uploads: instructor_pdf_solution.pdf, llm_helpers.py, python_tester_llm_pdf.py files
 - Autotester package requirements: git+https://github.com/MarkUsProject/ai-autograding-feedback.git#egg=ai_feedback
 - Student uploads: student_pdf_submission.pdf
@@ -424,7 +424,7 @@ Also pip install other packages that the submission or solution file uses.
 6. Ensure Markus Autotester docker container has the API Keys in an .env file and specified in the docker compose file.
 
 ##### GGR274 Test1 Example
-- Look at the /test_submissions/ggr274_hw5_custom_tester directory for the following files
+- Look at the /eval/test_submissions/ggr274_hw5_custom_tester directory for the following files
 - Instructor uploads: Homework_5_solution.ipynb, test_hw5.py, test_output.txt, custom_tester_llm_code.sh, run_hw5_test.sh
 - Two separate test groups: one for run_hw5_test.sh, and one for custom_tester_llm_code.sh
 - Student uploads: test1_submission.ipynb,  test1_submission.txt
