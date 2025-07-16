@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import sys
@@ -39,6 +40,7 @@ class RemoteModel(Model):
         scope: Optional[str] = None,
         llama_mode: Optional[str] = None,
         submission_image: Optional[str] = None,
+        json_schema: Optional[str] = None,
     ) -> Optional[Tuple[str, str]]:
         """
         Generate a model response using the prompt and assignment files.
@@ -53,6 +55,7 @@ class RemoteModel(Model):
             system_instructions (str): instructions for the model
             llama_mode (Optional[str]): Optional mode to invoke llama.cpp in.
             submission_image (Optional[str]): An optional path to a submission image file.
+            json_schema (Optional[str]): An optional json schema to use.
 
         Returns:
             Optional[Tuple[str, str]]: A tuple containing the prompt and the model's response,
@@ -62,6 +65,15 @@ class RemoteModel(Model):
 
         headers = {"X-API-KEY": os.getenv("REMOTE_API_KEY")}
         data = {"content": prompt, "model": self.model_name, "system_instructions": system_instructions}
+        if json_schema:
+            schema_path = Path(json_schema)
+            if not schema_path.exists():
+                raise FileNotFoundError(f"JSON schema file not found: {schema_path}")
+            with open(schema_path, "r", encoding="utf-8") as f:
+                schema = json.load(f)
+
+            data["json_schema"] = json.dumps(schema)
+
         if llama_mode:
             data["llama_mode"] = llama_mode
 
