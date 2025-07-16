@@ -48,6 +48,9 @@ def call_api(prompt: str, context: dict, metadata: dict) -> dict:
         if options.get('solution_file'):
             cmd_args.extend(["--solution", f"../{options['solution_file']}"])
 
+        if options.get('test_output_file'):
+            cmd_args.extend(["--test_output", f"../{options['test_output_file']}"])
+
         if options["scope"] == "image":
             if options['submission_file'].endswith('.png'):
                 cmd_args.extend(

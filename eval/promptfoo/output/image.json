@@ -1,0 +1,641 @@
+{
+  "evalId": "eval-UGd-2025-07-15T13:01:07",
+  "results": {
+    "version": 3,
+    "timestamp": "2025-07-15T13:01:07.542Z",
+    "prompts": [
+      {
+        "raw": "{{prompt}}",
+        "label": "{{prompt}}",
+        "id": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "provider": "file://../../promptfoo_test_runner.py",
+        "metrics": {
+          "score": 8,
+          "testPassCount": 8,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 1823239,
+          "tokenUsage": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 8,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "965548e5-1a3f-4f37-9f9f-f192c9d6c791",
+        "latencyMs": 76512,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | Medium | The title is not descriptive. | Readability | Use a more descriptive title. |\n| Subplot Titles | High | There are no subplot titles. | Readability | Add subplot titles to distinguish between the three groups. |\n| Axis Labels & Units | Medium | The x-axis labels are not clear. | Readability | Use more descriptive x-axis labels. |\n| Scale Numbers / Ticks | Low | The y-axis ticks are not evenly spaced. | Accuracy | Use evenly spaced y-axis ticks. |\n| Graph Type / Color & Legend | Medium | The graph type is not suitable for the data. | Style | Consider using a different graph type, such as a bar chart or scatter plot. |\n| Caption / Note | Low | There is no caption or note. | Readability | Add a caption or note to provide context. |\n| Reflection | — | (1) I did not check the data for errors. (2) I did not consider alternative graph types. | — | — |\n\nNote: The reflection row lists two revised items, numbered (1) and (2).",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/jsc270/correct_submission/correct_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/jsc270/correct_submission/correct_submission.ipynb"
+          },
+          "assert": [],
+          "description": "JSC270 correct submission"
+        },
+        "testIdx": 0,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/jsc270/correct_submission/correct_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "3963a777-d899-4b49-a206-ebe01f39f9f4",
+        "latencyMs": 137522,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "**Feature** | **Severity** | **Issue** | **Why it matters** | **Suggestion**\n--- | --- | --- | --- | ---\n**Main Title** | Low | The title is not descriptive. | Readability | Change to \"Boxplot of Age Group Data\"\n**Subplot Titles** | Medium | No subplot titles are provided. | Readability | Add subplot titles for each boxplot\n**Axis Labels & Units** | High | No axis labels or units are provided. | Accuracy | Add axis labels and units for x and y axes\n**Scale Numbers / Ticks** | Medium | Scale numbers and ticks are not visible. | Readability | Increase font size or add more ticks\n**Graph Type / Color & Legend** | Low | The graph type is not suitable for the data. | Style | Consider using a different graph type, such as a bar chart\n**Caption / Note** | Low | No caption or note is provided. | Readability | Add a caption or note to explain the graph\n**Reflection** | — | (1) I did not check the graph type suitability thoroughly. (2) I did not provide a clear suggestion for the graph type. | — | —",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/jsc270/style_submission/style_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/jsc270/style_submission/style_submission.ipynb"
+          },
+          "assert": [],
+          "description": "JSC270 style issue"
+        },
+        "testIdx": 3,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/jsc270/style_submission/style_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "4950c1ee-27c7-4338-b76b-8e0280de9c0f",
+        "latencyMs": 213823,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | Low | The title is not descriptive. | Readability | Use a more descriptive title. |\n| Subplot Titles | Medium | There are no subplot titles. | Readability | Add subplot titles to distinguish between the two plots. |\n| Axis Labels & Units | High | There are no axis labels or units. | Accuracy | Add axis labels and units to provide context. |\n| Scale Numbers / Ticks | Medium | The scale numbers are not clearly labeled. | Readability | Use a consistent and clear labeling scheme for the scale numbers. |\n| Graph Type / Color & Legend | Low | The graph type is not clearly indicated. | Style | Consider using a different graph type or adding a legend to clarify the data. |\n| Caption / Note | Low | There is no caption or note. | Readability | Add a caption or note to provide additional context. |\n| Reflection | — | (1) I did not check for consistency in formatting. (2) I did not consider alternative graph types. | — | — |\n\nNote: The reflection row is used to identify areas for improvement in the evaluation process. In this case, the evaluator notes that they did not check for consistency in formatting and did not consider alternative graph types. These are areas for improvement in the evaluation process.",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/jsc270/correctness_submission/correctness_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/jsc270/correctness_submission/correctness_submission.ipynb"
+          },
+          "assert": [],
+          "description": "JSC270 correctness issue"
+        },
+        "testIdx": 1,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/jsc270/correctness_submission/correctness_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "13a21101-5be6-4ea7-b02f-0ccc85d9a635",
+        "latencyMs": 275877,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "**Feature** | **Severity** | **Issue** | **Why it matters** | **Suggestion**\n--- | --- | --- | --- | ---\n**Main Title** | Low | The title is not descriptive. | Readability | Use a more descriptive title.\n**Subplot Titles** | Medium | The subplot titles are not descriptive. | Readability | Use more descriptive subplot titles.\n**Axis Labels & Units** | High | There are no axis labels or units. | Accuracy | Add axis labels and units.\n**Scale Numbers / Ticks** | Medium | The scale numbers are not clearly labeled. | Readability | Clearly label the scale numbers.\n**Graph Type / Color & Legend** | High | The graph type is not suitable for the data. | Style | Use a more suitable graph type.\n**Caption / Note** | Low | There is no caption or note. | Readability | Add a caption or note to explain the figure.\n**Reflection** | — | (1) I should have suggested using a more descriptive title. (2) I should have suggested using a more suitable graph type. | — | —",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/jsc270/efficiency_submission/efficiency_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/jsc270/efficiency_submission/efficiency_submission.ipynb"
+          },
+          "assert": [],
+          "description": "JSC270 efficiency issue"
+        },
+        "testIdx": 2,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/jsc270/efficiency_submission/efficiency_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "132a02d8-d086-4563-9a01-1477d6c7d216",
+        "latencyMs": 268787,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | High | Missing | Readability | Add a descriptive title |\n| Subplot Titles | N/A | N/A | N/A | N/A |\n| Axis Labels & Units | Medium | No units on y-axis | Accuracy | Add units to y-axis label |\n| Scale Numbers / Ticks | Low | Ticks are not evenly spaced | Readability | Use evenly spaced ticks |\n| Graph Type / Color & Legend | Medium | Bar chart may not be the best choice for this data | Style | Consider using a histogram or density plot |\n| Caption / Note | Low | No caption or note provided | Readability | Add a brief caption or note to explain the figure |\n| Reflection | — | (1) Initially, I did not consider the importance of units on the y-axis. (revised) (2) I should have suggested alternative graph types more explicitly. (revised) | — | — |\n\nNote: The student's figure is a bar chart with a single bar for each x-value, which may not be the most effective way to display this data. A histogram or density plot could provide more insight into the distribution of view counts.",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/sta130/correct_submission/correct_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/sta130/correct_submission/correct_submission.ipynb"
+          },
+          "assert": [],
+          "description": "STA130 correct submission"
+        },
+        "testIdx": 4,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/sta130/correct_submission/correct_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "4e49e600-3d26-4ba0-b08e-0f4f02e2934b",
+        "latencyMs": 282331,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | Medium | No title provided | Readability | Add a descriptive title |\n| Subplot Titles | N/A | N/A | N/A | N/A |\n| Axis Labels & Units | High | No labels or units on axes | Accuracy | Add clear labels and units |\n| Scale Numbers / Ticks | Medium | Ticks are not clearly labeled | Readability | Improve tick labeling |\n| Graph Type / Color & Legend | Low | Bar chart is appropriate, but colors could be improved | Style | Consider using a more visually appealing color scheme |\n| Caption / Note | Low | No caption or note provided | Readability | Add a brief caption or note to explain the figure |\n| Reflection | — | (1) Initially, I did not consider the importance of axis labels and units. (2) Upon reevaluation, I realized that the graph type and color scheme could be improved for better readability. | — | — |\n\nNote: The student's submission is a bar chart with no title, labels, or units on the axes. The graph type and color scheme are somewhat adequate but could be improved for better readability. The caption or note is missing, which would help explain the figure. Overall, the figure needs improvements in readability, accuracy, and style.",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/sta130/correctness_submission/correctness_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/sta130/correctness_submission/correctness_submission.ipynb"
+          },
+          "assert": [],
+          "description": "STA130 correctness issue"
+        },
+        "testIdx": 5,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/sta130/correctness_submission/correctness_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "ac1a40f4-5eec-4c32-bb1e-8bf5161c58b8",
+        "latencyMs": 275007,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | Medium | Missing title | Readability | Add a descriptive title |\n| Subplot Titles | N/A | Not applicable | N/A | N/A |\n| Axis Labels & Units | High | Missing labels and units | Accuracy | Add labels and units to axes |\n| Scale Numbers / Ticks | Low | Ticks are not clearly labeled | Readability | Improve tick labeling |\n| Graph Type / Color & Legend | Medium | Histogram may not be the best choice for this data | Style | Consider using a different graph type, such as a bar chart or box plot |\n| Caption / Note | Low | No caption or note provided | Readability | Add a brief caption or note to explain the figure |\n| Reflection | — | (1) Initially, I did not consider the importance of axis labels and units in ensuring accuracy. (2) Upon reevaluation, I realized that suggesting a different graph type could improve the overall style and readability of the figure. | — | — |\n\nNote: The reflection row highlights two revised items, which were initially overlooked or underemphasized. These revisions aim to improve the accuracy and style of the figure.",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/sta130/efficiency_submission/efficiency_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/sta130/efficiency_submission/efficiency_submission.ipynb"
+          },
+          "assert": [],
+          "description": "STA130 efficiency issue"
+        },
+        "testIdx": 6,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/sta130/efficiency_submission/efficiency_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "No assertions",
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "assertion": null
+        },
+        "id": "b1849273-d33c-4ac5-80c4-488203254142",
+        "latencyMs": 293380,
+        "namedScores": {},
+        "prompt": {
+          "raw": "image_overall",
+          "label": "{{prompt}}"
+        },
+        "promptId": "effa18501e44aafd9bc42a2f64ffc9b6350f94025520ca2ed382f9bdc4b6e982",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../../promptfoo_test_runner.py",
+          "label": ""
+        },
+        "response": {
+          "output": "| Feature | Severity | Issue | Why it matters | Suggestion |\n| --- | --- | --- | --- | --- |\n| Main Title | Medium | No title is provided. | Readability | Add a descriptive title. |\n| Subplot Titles | N/A | There are no subplots. | N/A | N/A |\n| Axis Labels & Units | High | No axis labels or units are provided. | Accuracy | Add clear and descriptive axis labels and units. |\n| Scale Numbers / Ticks | Medium | The scale numbers and ticks are not clearly visible. | Readability | Increase the font size of scale numbers and ticks. |\n| Graph Type / Color & Legend | Low | The graph type is appropriate, but the color scheme could be improved. | Style | Consider using a more visually appealing color scheme. |\n| Caption / Note | Medium | No caption or note is provided. | Readability | Add a brief caption or note to explain the graph's purpose. |\n| Reflection | — | (1) I should have suggested a specific font size for the scale numbers and ticks. (2) I should have mentioned that the graph type is a histogram. | — | — |\n\nNote: The student's figure is a histogram, which is an appropriate choice for displaying the distribution of view counts. However, the lack of axis labels, units, and a title makes it difficult to understand the graph's purpose and meaning. Additionally, the color scheme could be improved to make the graph more visually appealing.",
+          "prompt": "You are a teaching assistant for an undergraduate Data Visualization course.\nEvaluate the figure(s) submitted by a student and suggest improvements.\n\nCONTEXT\n- Student figure(s): The attached image is the student's submission.\n\nIf no figure is supplied, reply exactly: No figure submitted.\n\nOtherwise follow these steps:\n\n1. Inspect each aspect below and note any problems.\n   a. Main Title\n   b. Subplot Titles (if any)\n   c. Axis Labels and Units\n   d. Scale Numbers / Ticks (legibility, spacing, formatting)\n   e. Graph Type, Color and Legend\n   f. Caption or Figure Note\n\n2. For every problem record:\n   • Severity — High / Medium / Low\n   • Issue — concise description\n   • Why it matters — MUST mention at least one of the words **readability**, **accuracy**, or **style**\n   • Suggestion — start with an imperative verb and keep under 80 characters\n\n3. Comment on information efficiency: could a different chart type or layout communicate the data more clearly?\n   (Put this comment inside the “Graph Type / Color & Legend” row, not as extra text.)\n\n4. Self-critique: after completing the table, identify at least two omissions or weak explanations,\n   revise the related rows, and list the changes in the Reflection row as “(1) … (revised) (2) … (revised)”.\n\nReturn exactly one plain-text table.\nDo not use *, **, -, :, or extra header separators anywhere in the table.\nEvery cell must contain text; use “N/A” if truly not applicable.\nThe Reflection row must list two revised items, numbered (1) and (2).\n\n| Feature | Severity | Issue | Why it matters | Suggestion |\n| Main Title | | | | |\n| Subplot Titles | | | | |\n| Axis Labels & Units | | | | |\n| Scale Numbers / Ticks | | | | |\n| Graph Type / Color & Legend | | | | |\n| Caption / Note | | | | |\n| Reflection | — | (1) … (revised) (2) … (revised) | — | — |\n\n\n['../test_submissions/sta130/style_submission/style_submission.png']",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "metadata": {},
+          "options": {},
+          "vars": {
+            "model": "llama3.2-vision:90b",
+            "scope": "image",
+            "system_prompt": "image_style_grader",
+            "prompt": "image_overall",
+            "submission_file": "test_submissions/sta130/style_submission/style_submission.ipynb"
+          },
+          "assert": [],
+          "description": "STA130 style issue"
+        },
+        "testIdx": 7,
+        "vars": {
+          "model": "llama3.2-vision:90b",
+          "scope": "image",
+          "system_prompt": "image_style_grader",
+          "prompt": "image_overall",
+          "submission_file": "test_submissions/sta130/style_submission/style_submission.ipynb"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 8,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "cached": 0,
+        "completion": 0,
+        "prompt": 0,
+        "total": 0,
+        "numRequests": 8,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0
+        }
+      }
+    }
+  },
+  "config": {
+    "tags": {},
+    "prompts": [
+      "{{prompt}}"
+    ],
+    "providers": [
+      {
+        "id": "file://../../promptfoo_test_runner.py"
+      }
+    ],
+    "tests": [],
+    "scenarios": [
+      {
+        "config": [
+          {
+            "vars": {
+              "prompt": "image_overall"
+            }
+          }
+        ],
+        "tests": [
+          {
+            "description": "JSC270 correct submission",
+            "vars": {
+              "submission_file": "test_submissions/jsc270/correct_submission/correct_submission.ipynb"
+            }
+          },
+          {
+            "description": "JSC270 correctness issue",
+            "vars": {
+              "submission_file": "test_submissions/jsc270/correctness_submission/correctness_submission.ipynb"
+            }
+          },
+          {
+            "description": "JSC270 efficiency issue",
+            "vars": {
+              "submission_file": "test_submissions/jsc270/efficiency_submission/efficiency_submission.ipynb"
+            }
+          },
+          {
+            "description": "JSC270 style issue",
+            "vars": {
+              "submission_file": "test_submissions/jsc270/style_submission/style_submission.ipynb"
+            }
+          },
+          {
+            "description": "STA130 correct submission",
+            "vars": {
+              "submission_file": "test_submissions/sta130/correct_submission/correct_submission.ipynb"
+            }
+          },
+          {
+            "description": "STA130 correctness issue",
+            "vars": {
+              "submission_file": "test_submissions/sta130/correctness_submission/correctness_submission.ipynb"
+            }
+          },
+          {
+            "description": "STA130 efficiency issue",
+            "vars": {
+              "submission_file": "test_submissions/sta130/efficiency_submission/efficiency_submission.ipynb"
+            }
+          },
+          {
+            "description": "STA130 style issue",
+            "vars": {
+              "submission_file": "test_submissions/sta130/style_submission/style_submission.ipynb"
+            }
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "sharing": true,
+    "defaultTest": {
+      "vars": {
+        "model": "llama3.2-vision:90b",
+        "scope": "image",
+        "system_prompt": "image_style_grader"
+      },
+      "assert": [],
+      "options": {},
+      "metadata": {}
+    },
+    "outputPath": [
+      "output/image.json"
+    ],
+    "extensions": [],
+    "metadata": {}
+  },
+  "shareableUrl": null
+}
