@@ -29,6 +29,7 @@ class Prompt(Enum):
     IMAGE_STYLE = "image_style"
     IMAGE_STYLE_ANNOTATIONS = "image_style_annotations"
     IMAGE_OVERALL = "image_overall"
+    IMAGE_COMPARE_OVERALL = "image_compare_overall"
     CODE_LINES = "code_lines"
     CODE_TEMPLATE = "code_template"
     CODE_TABLE = "code_table"
