@@ -36,4 +36,4 @@ Return only this single table, fully populated (use “N/A” if a cell truly do
 | Caption / Note | | | | |
 | Data Points | | | | |
 | Accuracy vs Solution | | | | |
-| Other | N/A | N/A | N/A | N/A |
+| Other | | | | |
