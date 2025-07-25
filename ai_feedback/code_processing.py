@@ -10,7 +10,7 @@ from .helpers.template_utils import render_prompt_template
 EXPECTED_SUFFIXES = ["_solution", "test_output", "_submission"]
 
 
-def process_code(args, prompt: str, system_instructions: str) -> Tuple[str, str]:
+def process_code(args, prompt: str, system_instructions: str, marking_instructions: str = None) -> Tuple[str, str]:
     """
     Processes assignment files and generates a response using the selected model.
 
@@ -22,6 +22,7 @@ def process_code(args, prompt: str, system_instructions: str) -> Tuple[str, str]
         args: Command-line argument namespace containing submission_type, assignment, model, scope, and question.
         prompt (str): The initial user prompt to be modified and passed to the model.
         system_instructions (str): instructions for the model
+        marking_instructions (str, optional): Marking instructions to replace {marking_instructions} placeholder
 
     Returns:
         Tuple[str, str]: A tuple containing the final request string and the model's generated response.
@@ -62,6 +63,7 @@ def process_code(args, prompt: str, system_instructions: str) -> Tuple[str, str]
         solution=solution_file,
         test_output=test_output_file,
         question_num=args.question,
+        marking_instructions=marking_instructions,
     )
 
     if args.model in model_mapping:
