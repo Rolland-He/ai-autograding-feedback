@@ -39,7 +39,12 @@ def process_text(args, prompt: str, system_instructions: str, marking_instructio
     test_output = Path(args.test_output) if args.test_output else None
 
     rendered_prompt = render_prompt_template(
-        prompt, solution=solution_file, submission=submission_file, test_output=test_output, question_num=args.question, marking_instructions=marking_instructions
+        prompt,
+        solution=solution_file,
+        submission=submission_file,
+        test_output=test_output,
+        question_num=args.question,
+        marking_instructions=marking_instructions,
     )
 
     if args.model in model_mapping:

@@ -286,9 +286,13 @@ def main() -> int:
         prompt = {"prompt_content": prompt_content}
         request, response = image_processing.process_image(args, prompt, system_instructions, marking_instructions)
     elif args.scope == "text":
-        request, response = text_processing.process_text(args, prompt_content, system_instructions, marking_instructions)
+        request, response = text_processing.process_text(
+            args, prompt_content, system_instructions, marking_instructions
+        )
     else:
-        request, response = code_processing.process_code(args, prompt_content, system_instructions, marking_instructions)
+        request, response = code_processing.process_code(
+            args, prompt_content, system_instructions, marking_instructions
+        )
 
     markdown_template = load_markdown_template(args.output_template)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
