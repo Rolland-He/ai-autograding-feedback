@@ -1,5 +1,6 @@
 import base64
 from pathlib import Path
+from typing import Optional
 
 from anthropic import Anthropic
 from dotenv import load_dotenv
@@ -87,7 +88,7 @@ def anthropic_call(message: Message, model: str) -> str | None:
     return message.content[0].text
 
 
-def process_image(args, prompt: dict, system_instructions: str, marking_instructions: str = None) -> tuple[str, str]:
+def process_image(args, prompt: dict, system_instructions: str, marking_instructions: Optional[str] = None) -> tuple[str, str]:
     """Generates feedback for an image submission.
     Returns the LLM prompt delivered and the returned response."""
     OUTPUT_DIRECTORY = "output_images"
