@@ -1,12 +1,14 @@
 import sys
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from .helpers.arg_options import model_mapping
 from .helpers.template_utils import render_prompt_template
 
 
-def process_text(args, prompt: str, system_instructions: str, marking_instructions: Optional[str] = None) -> Tuple[str, str]:
+def process_text(
+    args, prompt: str, system_instructions: str, marking_instructions: Optional[str] = None
+) -> Tuple[str, str]:
     """
     Processes text-based assignment files and generates a response using the selected model.
 
