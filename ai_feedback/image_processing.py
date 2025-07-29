@@ -170,6 +170,7 @@ def process_image(
                 question_num=question,
                 submission_image=args.submission_image,
                 json_schema=args.json_schema,
+                model_options=args.model_options,
             )
             responses.append(str(response))
         else:

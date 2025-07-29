@@ -17,4 +17,5 @@ HELP_MESSAGES = {
     "json_schema": "file path to a json file that contains the schema for ai output",
     "system_prompt": "Pre-defined system prompt name (from ai_feedback/data/prompts/system/) or file path to custom system prompt file.",
     "marking_instructions": "File path to marking instructions/rubric.",
+    "model_options": "Comma-separated key-value pairs of model options",
 }
